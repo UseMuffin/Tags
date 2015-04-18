@@ -1,8 +1,9 @@
 # Tags
 
-[![Build Status](https://travis-ci.org/usemuffin/tags.svg?branch=master)](https://travis-ci.org/usemuffin/tags)
-[![Total Downloads](https://poser.pugx.org/usemuffin/tags/downloads.svg)](https://packagist.org/packages/usemuffin/tags)
-[![License](https://poser.pugx.org/usemuffin/tags/license.svg)](https://packagist.org/packages/usemuffin/tags)
+[![Build Status](https://img.shields.io/travis/UseMuffin/Tags/master.svg?style=flat-square)](https://travis-ci.org/UseMuffin/Tags)
+[![Coverage](https://img.shields.io/coveralls/UseMuffin/Tags/master.svg?style=flat-square)](https://coveralls.io/r/UseMuffin/Tags)
+[![Total Downloads](https://img.shields.io/packagist/dt/muffin/slug.svg?style=flat-square)](https://packagist.org/packages/muffin/tags)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
 {{@TODO description}}
 
