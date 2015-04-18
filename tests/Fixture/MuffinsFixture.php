@@ -10,7 +10,7 @@ class MuffinsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer'],
         'name' => ['type' => 'string', 'length' => 255],
-        'tags_cnt' => ['type' => 'integer', 'null' => true, 'default' => 0],
+        'tag_count' => ['type' => 'integer', 'null' => true, 'default' => 0],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id']],
         ],
@@ -20,12 +20,12 @@ class MuffinsFixture extends TestFixture
         [
             'id' => 1,
             'name' => 'blue',
-            'tags_cnt' => 2,
+            'tag_count' => 2,
         ],
         [
             'id' => 2,
             'name' => 'red',
-            'tags_cnt' => 1,
+            'tag_count' => 1,
         ],
     ];
 }

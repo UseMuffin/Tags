@@ -46,13 +46,13 @@ class TagAwareTraitTest extends TestCase
     {
         $entity = new TagsMuffin(['id' => 1]);
         $entity->tag('new');
-        $this->assertEquals(3, $this->Table->get(1)->tags_cnt);
+        $this->assertEquals(3, $this->Table->get(1)->tag_count);
     }
 
     public function testUntag()
     {
         $entity = new TagsMuffin(['id' => 1]);
         $entity->untag('Color');
-        $this->assertEquals(1, $this->Table->get(1)->tags_cnt);
+        $this->assertEquals(1, $this->Table->get(1)->tag_count);
     }
 }
