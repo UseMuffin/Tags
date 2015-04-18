@@ -1,0 +1,50 @@
+{
+    "name": "muffin/tags",
+    "description": "Tags plugin for CakePHP 3.x",
+    "type": "cakephp-plugin",
+    "keywords": [
+        "cakephp",
+        "muffin",
+        "tags"
+    ],
+    "homepage": "https://github.com/usemuffin/tags",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jad Bitar",
+            "homepage": "http://jadb.io",
+            "role": "Author"
+        },
+        {
+            "name": "ADmad",
+            "homepage": "https://github.com/ADmad",
+            "role": "Author"
+        },
+        {
+            "name": "Others",
+            "homepage": "https://github.com/usemuffin/tags/graphs/contributors"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/usemuffin/tags/issues",
+        "source": "https://github.com/usemuffin/tags"
+    },
+    "require-dev": {
+        "cakephp/cakephp": "~3.0",
+        "cakephp/cakephp-codesniffer": "2.*",
+        "phpunit/phpunit": "4.1.*",
+        "muffin/slug": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Muffin\\Tags\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Muffin\\Tags\\Test\\": "tests"
+        }
+    },
+    "require": {
+    }
+}
