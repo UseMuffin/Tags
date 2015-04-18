@@ -32,7 +32,7 @@ class TagBehavior extends Behavior
         'taggedAssoc' => [
             'className' => 'Muffin/Tags.Tagged',
         ],
-        'taggedCounter' => ['tags_cnt'],
+        'taggedCounter' => ['tag_count'],
         'implementedEvents' => [
             'Model.beforeMarshal' => 'beforeMarshal',
         ],

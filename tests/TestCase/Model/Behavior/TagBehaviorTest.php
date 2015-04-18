@@ -179,7 +179,7 @@ class TagBehaviorTest extends TestCase
         $expected = $counter + 1;
         $this->assertEquals($expected, $result);
 
-        $result = $this->Table->get($entity->id)->tags_cnt;
+        $result = $this->Table->get($entity->id)->tag_count;
         $expected = 2;
         $this->assertEquals($expected, $result);
     }
