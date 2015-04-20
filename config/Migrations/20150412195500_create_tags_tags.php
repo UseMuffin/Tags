@@ -25,7 +25,6 @@ class CreateTagsTags extends AbstractMigration
             'default' => 0,
             'length' => 11,
             'null' => false,
-            'unsigned' => true,
         ]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
@@ -35,5 +34,6 @@ class CreateTagsTags extends AbstractMigration
             'default' => null,
             'null' => true,
         ]);
+        $table->create();
     }
 }
