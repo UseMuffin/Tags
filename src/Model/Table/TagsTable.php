@@ -9,7 +9,7 @@ class TagsTable extends Table
     /**
      * Initialize
      *
-     * @param array
+     * @param array $config Configuration settings.
      * @return void
      */
     public function initialize(array $config)

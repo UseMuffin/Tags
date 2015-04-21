@@ -11,12 +11,12 @@ class CreateTagsTagged extends AbstractMigration
             'length' => 11,
             'null' => true,
         ]);
-        $table->addColumn('entity_id', 'integer', [
+        $table->addColumn('fk_id', 'integer', [
             'default' => null,
             'length' => 11,
             'null' => true,
         ]);
-        $table->addColumn('entity', 'string', [
+        $table->addColumn('fk_model', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,

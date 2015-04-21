@@ -23,7 +23,7 @@ class TagBehavior extends Behavior
         'tagsAssoc' => [
             'className' => 'Muffin/Tags.Tags',
             'joinTable' => 'tags_tagged',
-            'foreignKey' => 'entity_id',
+            'foreignKey' => 'fk_id',
             'targetForeignKey' => 'tag_id',
             'propertyName' => 'tags',
         ],
@@ -70,7 +70,6 @@ class TagBehavior extends Behavior
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
         $field = $this->config('tagsAssoc.propertyName');
-
         if (!empty($data[$field]) && (!is_array($data[$field]) || !array_key_exists('_ids', $data[$field]))) {
             $data[$field] = $this->normalizeTags($data[$field]);
         }
