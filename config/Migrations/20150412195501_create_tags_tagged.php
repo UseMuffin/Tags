@@ -6,17 +6,18 @@ class CreateTagsTagged extends AbstractMigration
     public function change()
     {
         $table = $this->table('tags_tagged');
+
         $table->addColumn('tag_id', 'integer', [
             'default' => null,
             'length' => 11,
             'null' => true,
         ]);
-        $table->addColumn('entity_id', 'integer', [
+        $table->addColumn('fk_id', 'integer', [
             'default' => null,
             'length' => 11,
             'null' => true,
         ]);
-        $table->addColumn('entity', 'string', [
+        $table->addColumn('fk_table', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,
@@ -29,5 +30,7 @@ class CreateTagsTagged extends AbstractMigration
             'default' => null,
             'null' => true,
         ]);
+
+        $table->create();
     }
 }

@@ -6,6 +6,7 @@ class CreateTagsTags extends AbstractMigration
     public function change()
     {
         $table = $this->table('tags_tags');
+
         $table->addColumn('namespace', 'string', [
             'default' => null,
             'limit' => 255,
@@ -16,7 +17,7 @@ class CreateTagsTags extends AbstractMigration
             'limit' => 255,
             'null' => false,
         ]);
-        $table->addColumn('name', 'string', [
+        $table->addColumn('label', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,
@@ -25,7 +26,7 @@ class CreateTagsTags extends AbstractMigration
             'default' => 0,
             'length' => 11,
             'null' => false,
-            'unsigned' => true,
+            'signed' => false,
         ]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
@@ -35,5 +36,7 @@ class CreateTagsTags extends AbstractMigration
             'default' => null,
             'null' => true,
         ]);
+
+        $table->create();
     }
 }
