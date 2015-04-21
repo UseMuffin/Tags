@@ -64,6 +64,13 @@ trait TagAwareTrait
         );
     }
 
+    /**
+     * Update tags.
+     *
+     * @param array Array of tags.
+     * @param string $saveStrategy The save strategy to use.
+     * @return boolean
+     */
     protected function _updateTags($tags, $saveStrategy)
     {
         $table = TableRegistry::get($this->source());

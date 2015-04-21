@@ -17,7 +17,7 @@ class CreateTagsTags extends AbstractMigration
             'limit' => 255,
             'null' => false,
         ]);
-        $table->addColumn('label', 'string', [
+        $table->addColumn('name', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,
@@ -26,7 +26,6 @@ class CreateTagsTags extends AbstractMigration
             'default' => 0,
             'length' => 11,
             'null' => false,
-            'signed' => false,
         ]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
@@ -36,7 +35,6 @@ class CreateTagsTags extends AbstractMigration
             'default' => null,
             'null' => true,
         ]);
-
         $table->create();
     }
 }

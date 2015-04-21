@@ -6,6 +6,12 @@ use Cake\ORM\Table;
 
 class TagsTable extends Table
 {
+    /**
+     * Initialize
+     *
+     * @param array $config Configuration settings.
+     * @return void
+     */
     public function initialize(array $config)
     {
         $this->table('tags_tags');

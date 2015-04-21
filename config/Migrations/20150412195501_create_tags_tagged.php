@@ -30,7 +30,6 @@ class CreateTagsTagged extends AbstractMigration
             'default' => null,
             'null' => true,
         ]);
-
         $table->create();
     }
 }
