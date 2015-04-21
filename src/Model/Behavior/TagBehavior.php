@@ -32,7 +32,7 @@ class TagBehavior extends Behavior
         'taggedAssoc' => [
             'className' => 'Muffin/Tags.Tagged',
         ],
-        'taggedCounter' => ['tag_count'],
+        'taggedCounter' => 'tag_count',
         'implementedEvents' => [
             'Model.beforeMarshal' => 'beforeMarshal',
         ],
@@ -70,7 +70,7 @@ class TagBehavior extends Behavior
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
         $field = $this->config('tagsAssoc.propertyName');
-        if (!empty($data[$field]) && (!is_array($data[$field]) || !array_key_exists('_ids', $data[$field]))) {
+        if (!empty($data[$field]) && (!is_array($data[$field]) || !empty($data[$field]) && is_string($data[$field]) || !array_key_exists('_ids', $data[$field]))) {
             $data[$field] = $this->normalizeTags($data[$field]);
         }
     }
@@ -135,6 +135,15 @@ class TagBehavior extends Behavior
     public function attachCounters()
     {
         $config = $this->config();
+
+        if ($config['taggedCounter'] === false) {
+            return;
+        }
+
+        if (!$this->_table->hasField($config['taggedCounter'])) {
+            throw new \RuntimeException(sprintf('Field(s) %s are missing in table %s!', $config['taggedCounter'], $this->_table->table()));
+        }
+
         $tagsAlias = $config['tagsAlias'];
         $taggedAlias = $config['taggedAlias'];
 
