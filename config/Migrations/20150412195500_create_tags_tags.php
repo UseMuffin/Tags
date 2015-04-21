@@ -6,6 +6,7 @@ class CreateTagsTags extends AbstractMigration
     public function change()
     {
         $table = $this->table('tags_tags');
+
         $table->addColumn('namespace', 'string', [
             'default' => null,
             'limit' => 255,
