@@ -23,7 +23,7 @@ class TagBehavior extends Behavior
         'tagsAssoc' => [
             'className' => 'Muffin/Tags.Tags',
             'joinTable' => 'tags_tagged',
-            'foreignKey' => 'fk_id',
+            'foreignKey' => 'entity_id',
             'targetForeignKey' => 'tag_id',
             'propertyName' => 'tags',
         ],
