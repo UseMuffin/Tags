@@ -7,6 +7,7 @@ use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use RuntimeException;
 
 class TagBehavior extends Behavior
 {
@@ -134,6 +135,7 @@ class TagBehavior extends Behavior
      * on both the `Tags` and the tagged entities.
      *
      * @return void
+     * @throws \RuntimeException
      */
     public function attachCounters()
     {
@@ -151,6 +153,20 @@ class TagBehavior extends Behavior
 
         if (!$counterCache->config($tagsAlias)) {
             $counterCache->config($tagsAlias, $config['tagsCounter']);
+        }
+
+        if ($config['taggedCounter'] === false) {
+            return;
+        }
+
+        foreach ($config['taggedCounter'] as $field => $o) {
+            if (!$this->_table->hasField($field)) {
+                throw new RuntimeException(sprintf(
+                    'Field "%s" does not exist in table "%s"',
+                    $field,
+                    $this->_table->table()
+                ));
+            }
         }
 
         if (!$counterCache->config($taggedAlias)) {

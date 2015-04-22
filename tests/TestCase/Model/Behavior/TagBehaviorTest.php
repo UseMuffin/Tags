@@ -184,4 +184,42 @@ class TagBehaviorTest extends TestCase
         $expected = 2;
         $this->assertEquals($expected, $result);
     }
+
+    public function testCounterCacheDisabled()
+    {
+        $this->Table->removeBehavior('Tag');
+        $this->Table->Tagged->removeBehavior('CounterCache');
+
+        $this->Table->addBehavior('Muffin/Tags.Tag', [
+            'taggedCounter' => false
+        ]);
+
+        $count = $this->Table->get(1)->tag_count;
+
+        $data = [
+            'id' => 1,
+            'tags' => '1:Color, 2:Dark Color, new color',
+        ];
+
+        $entity = $this->Table->newEntity($data);
+        $this->Table->save($entity);
+
+        $result = $this->Table->get(1)->tag_count;
+        $this->assertEquals($count, $result);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Field "non_existent" does not exist in table "tags_buns"
+     */
+    public function testCounterCacheFieldException()
+    {
+        $table = TableRegistry::get('Buns', ['table' => 'tags_buns']);
+        $table->addBehavior('Muffin/Tags.Tag', [
+            'taggedCounter' => [
+                'non_existent' => []
+            ]
+        ]);
+    }
+
 }
