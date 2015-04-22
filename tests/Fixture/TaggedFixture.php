@@ -21,31 +21,26 @@ class TaggedFixture extends TestFixture
 
     public $records = [
         [
-            'id' => 1,
             'tag_id' => 1,
             'fk_id' => 1,
             'fk_table' => 'tags_muffins',
         ],
         [
-            'id' => 2,
             'tag_id' => 2,
             'fk_id' => 1,
             'fk_table' => 'tags_muffins',
         ],
         [
-            'id' => 3,
             'tag_id' => 1,
             'fk_id' => 2,
             'fk_table' => 'tags_muffins',
         ],
         [
-            'id' => 4,
             'tag_id' => 1,
             'fk_id' => 1,
             'fk_table' => 'tags_buns',
         ],
         [
-            'id' => 5,
             'tag_id' => 2,
             'fk_id' => 2,
             'fk_table' => 'tags_buns',

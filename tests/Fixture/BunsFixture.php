@@ -18,12 +18,10 @@ class BunsFixture extends TestFixture
 
     public $records = [
         [
-            'id' => 1,
             'name' => 'square',
             'tag_count' => 1,
         ],
         [
-            'id' => 2,
             'name' => 'round',
             'tag_count' => 1,
         ],

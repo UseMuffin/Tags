@@ -18,12 +18,10 @@ class MuffinsFixture extends TestFixture
 
     public $records = [
         [
-            'id' => 1,
             'name' => 'blue',
             'tag_count' => 2,
         ],
         [
-            'id' => 2,
             'name' => 'red',
             'tag_count' => 1,
         ],
