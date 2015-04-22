@@ -32,7 +32,9 @@ class TagBehavior extends Behavior
         'taggedAssoc' => [
             'className' => 'Muffin/Tags.Tagged',
         ],
-        'taggedCounter' => ['tag_count'],
+        'taggedCounter' => ['tag_count' => [
+            'conditions' => []
+        ]],
         'implementedEvents' => [
             'Model.beforeMarshal' => 'beforeMarshal',
         ],
@@ -152,6 +154,10 @@ class TagBehavior extends Behavior
         }
 
         if (!$counterCache->config($taggedAlias)) {
+            $field = key($config['taggedCounter']);
+            $config['taggedCounter']['tag_count']['conditions'] = [
+                $taggedTable->aliasField('fk_table') => $this->_table->table()
+            ];
             $counterCache->config($this->_table->alias(), $config['taggedCounter']);
         }
     }

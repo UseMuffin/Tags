@@ -38,6 +38,18 @@ class TaggedFixture extends TestFixture
             'fk_id' => 2,
             'fk_table' => 'tags_muffins',
         ],
+        [
+            'id' => 4,
+            'tag_id' => 1,
+            'fk_id' => 1,
+            'fk_table' => 'tags_buns',
+        ],
+        [
+            'id' => 5,
+            'tag_id' => 2,
+            'fk_id' => 2,
+            'fk_table' => 'tags_buns',
+        ],
     ];
 
     public function init()

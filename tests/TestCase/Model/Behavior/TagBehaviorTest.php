@@ -8,9 +8,10 @@ use Muffin\Tags\Model\Behavior\TagBehavior;
 class TagBehaviorTest extends TestCase
 {
     public $fixtures = [
-        'Muffins' => 'plugin.muffin/tags.muffins',
-        'Muffin/Tags.Tagged' => 'plugin.muffin/tags.tagged',
-        'Muffin/Tags.Tags' => 'plugin.muffin/tags.tags',
+        'plugin.Muffin/Tags.Buns',
+        'plugin.Muffin/Tags.Muffins',
+        'plugin.Muffin/Tags.Tagged',
+        'plugin.Muffin/Tags.Tags',
     ];
 
     public function setUp()

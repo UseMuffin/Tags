@@ -26,14 +26,14 @@ class TagsFixture extends TestFixture
             'namespace' => null,
             'slug' => 'color',
             'label' => 'Color',
-            'counter' => 2,
+            'counter' => 3,
         ],
         [
             'id' => 2,
             'namespace' => null,
             'slug' => 'dark-color',
             'label' => 'Dark Color',
-            'counter' => 1,
+            'counter' => 2,
         ],
     ];
 
