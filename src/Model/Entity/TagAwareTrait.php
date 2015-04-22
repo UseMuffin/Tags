@@ -12,8 +12,8 @@ trait TagAwareTrait
      * Tag entity with given tags.
      *
      * @param string|array $tags List of tags as an array or a delimited string (comma by default).
-     * @param boolean $merge Whether to merge or replace tags. Default true.
-     * @return boolean|\Cake\ORM\Entity False on failure, entity on success.
+     * @param bool $merge Whether to merge or replace tags. Default true.
+     * @return bool|\Cake\ORM\Entity False on failure, entity on success.
      */
     public function tag($tags, $merge = true)
     {
@@ -25,7 +25,7 @@ trait TagAwareTrait
      *
      * @param string|array $tags List of tags as an array or a delimited string (comma by default).
      *   If no value is passed all tags will be removed.
-     * @return boolean|\Cake\ORM\Entity False on failure, entity on success.
+     * @return bool|\Cake\ORM\Entity False on failure, entity on success.
      */
     public function untag($tags = null)
     {
@@ -58,8 +58,7 @@ trait TagAwareTrait
 
         foreach ($untags as $untag) {
             foreach ($tags as $k => $tag) {
-                if (
-                    (empty($untag[$pk]) || $tag[$pk] === $untag[$pk]) &&
+                if ((empty($untag[$pk]) || $tag[$pk] === $untag[$pk]) &&
                     (empty($untag[$df]) || $tag[$df] === $untag[$df])
                 ) {
                     unset($tags[$k]);
@@ -68,7 +67,12 @@ trait TagAwareTrait
         }
 
         return $this->_updateTags(
-            array_map(function ($i) { return implode(':', $i); }, $tags),
+            array_map(
+                function ($i) {
+                    return implode(':', $i);
+                },
+                $tags
+            ),
             'replace'
         );
     }
@@ -79,7 +83,7 @@ trait TagAwareTrait
      * @param string|array $tags List of tags as an array or a delimited string (comma by default).
      * @param string $saveStrategy Whether to merge or replace tags.
      *   Valid values 'append', 'replace'.
-     * @return boolean|\Cake\ORM\Entity False on failure, entity on success.
+     * @return bool|\Cake\ORM\Entity False on failure, entity on success.
      */
     protected function _updateTags($tags, $saveStrategy)
     {

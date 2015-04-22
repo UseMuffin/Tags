@@ -221,5 +221,4 @@ class TagBehaviorTest extends TestCase
             ]
         ]);
     }
-
 }
