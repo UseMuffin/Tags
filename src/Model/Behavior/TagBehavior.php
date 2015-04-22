@@ -45,7 +45,10 @@ class TagBehavior extends Behavior
     ];
 
     /**
-     * {inheritdoc}
+     * Initialize configuration.
+     *
+     * @param array $config Configuration array.
+     * @return void
      */
     public function initialize(array $config)
     {
@@ -60,7 +63,9 @@ class TagBehavior extends Behavior
     }
 
     /**
-     * {@inheritdoc}
+     * Return lists of event's this behavior is interested in.
+     *
+     * @return array Events list.
      */
     public function implementedEvents()
     {
@@ -68,7 +73,12 @@ class TagBehavior extends Behavior
     }
 
     /**
-     * {@inheritdoc}
+     * Before marshal callaback
+     *
+     * @param \Cake\Event\Event $event The Model.beforeMarshal event.
+     * @param \ArrayObject $data Data.
+     * @param \ArrayObject $options Options.
+     * @return void
      */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
@@ -135,7 +145,7 @@ class TagBehavior extends Behavior
      * on both the `Tags` and the tagged entities.
      *
      * @return void
-     * @throws \RuntimeException
+     * @throws \RuntimeException If configured counter cache field does not exist in table.
      */
     public function attachCounters()
     {

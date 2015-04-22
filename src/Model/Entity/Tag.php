@@ -5,8 +5,11 @@ use Cake\ORM\Entity;
 
 class Tag extends Entity
 {
+
     /**
-     * {@inheritdoc}
+     * List of properties that can be mass assigned.
+     *
+     * @var array
      */
     public $accessible = [
         '*' => false,
