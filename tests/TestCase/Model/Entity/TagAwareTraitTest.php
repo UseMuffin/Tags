@@ -12,7 +12,7 @@ class TagsMuffin extends Entity
 
     public function source($source = null)
     {
-        return 'Muffins';
+        return 'Muffin/Tags.Muffins';
     }
 }
 
@@ -28,7 +28,7 @@ class TagAwareTraitTest extends TestCase
     {
         parent::setUp();
 
-        $table = TableRegistry::get('Muffins', ['table' => 'tags_muffins']);
+        $table = TableRegistry::get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
         $table->addBehavior('Muffin/Tags.Tag');
 
         $this->Table = $table;

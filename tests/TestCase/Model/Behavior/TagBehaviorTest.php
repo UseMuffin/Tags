@@ -18,7 +18,7 @@ class TagBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $table = TableRegistry::get('Muffins', ['table' => 'tags_muffins']);
+        $table = TableRegistry::get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
         $table->addBehavior('Muffin/Tags.Tag');
 
         $this->Table = $table;
@@ -214,7 +214,7 @@ class TagBehaviorTest extends TestCase
      */
     public function testCounterCacheFieldException()
     {
-        $table = TableRegistry::get('Buns', ['table' => 'tags_buns']);
+        $table = TableRegistry::get('Muffin/Tags.Buns', ['table' => 'tags_buns']);
         $table->addBehavior('Muffin/Tags.Tag', [
             'taggedCounter' => [
                 'non_existent' => []
