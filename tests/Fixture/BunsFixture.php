@@ -3,9 +3,9 @@ namespace Muffin\Tags\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
-class MuffinsFixture extends TestFixture
+class BunsFixture extends TestFixture
 {
-    public $table = 'tags_muffins';
+    public $table = 'tags_buns';
 
     public $fields = [
         'id' => ['type' => 'integer'],
@@ -18,11 +18,11 @@ class MuffinsFixture extends TestFixture
 
     public $records = [
         [
-            'name' => 'blue',
-            'tag_count' => 2,
+            'name' => 'square',
+            'tag_count' => 1,
         ],
         [
-            'name' => 'red',
+            'name' => 'round',
             'tag_count' => 1,
         ],
     ];
