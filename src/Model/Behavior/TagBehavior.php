@@ -7,6 +7,7 @@ use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use RuntimeException;
 
 class TagBehavior extends Behavior
 {
@@ -32,7 +33,9 @@ class TagBehavior extends Behavior
         'taggedAssoc' => [
             'className' => 'Muffin/Tags.Tagged',
         ],
-        'taggedCounter' => ['tag_count'],
+        'taggedCounter' => ['tag_count' => [
+            'conditions' => []
+        ]],
         'implementedEvents' => [
             'Model.beforeMarshal' => 'beforeMarshal',
         ],
@@ -42,7 +45,10 @@ class TagBehavior extends Behavior
     ];
 
     /**
-     * {inheritdoc}
+     * Initialize configuration.
+     *
+     * @param array $config Configuration array.
+     * @return void
      */
     public function initialize(array $config)
     {
@@ -57,7 +63,9 @@ class TagBehavior extends Behavior
     }
 
     /**
-     * {@inheritdoc}
+     * Return lists of event's this behavior is interested in.
+     *
+     * @return array Events list.
      */
     public function implementedEvents()
     {
@@ -65,7 +73,12 @@ class TagBehavior extends Behavior
     }
 
     /**
-     * {@inheritdoc}
+     * Before marshal callaback
+     *
+     * @param \Cake\Event\Event $event The Model.beforeMarshal event.
+     * @param \ArrayObject $data Data.
+     * @param \ArrayObject $options Options.
+     * @return void
      */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
@@ -132,6 +145,7 @@ class TagBehavior extends Behavior
      * on both the `Tags` and the tagged entities.
      *
      * @return void
+     * @throws \RuntimeException If configured counter cache field does not exist in table.
      */
     public function attachCounters()
     {
@@ -151,7 +165,25 @@ class TagBehavior extends Behavior
             $counterCache->config($tagsAlias, $config['tagsCounter']);
         }
 
+        if ($config['taggedCounter'] === false) {
+            return;
+        }
+
+        foreach ($config['taggedCounter'] as $field => $o) {
+            if (!$this->_table->hasField($field)) {
+                throw new RuntimeException(sprintf(
+                    'Field "%s" does not exist in table "%s"',
+                    $field,
+                    $this->_table->table()
+                ));
+            }
+        }
+
         if (!$counterCache->config($taggedAlias)) {
+            $field = key($config['taggedCounter']);
+            $config['taggedCounter']['tag_count']['conditions'] = [
+                $taggedTable->aliasField('fk_table') => $this->_table->table()
+            ];
             $counterCache->config($this->_table->alias(), $config['taggedCounter']);
         }
     }

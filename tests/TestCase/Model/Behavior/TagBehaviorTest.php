@@ -8,16 +8,17 @@ use Muffin\Tags\Model\Behavior\TagBehavior;
 class TagBehaviorTest extends TestCase
 {
     public $fixtures = [
-        'Muffins' => 'plugin.muffin/tags.muffins',
-        'Muffin/Tags.Tagged' => 'plugin.muffin/tags.tagged',
-        'Muffin/Tags.Tags' => 'plugin.muffin/tags.tags',
+        'plugin.Muffin/Tags.Buns',
+        'plugin.Muffin/Tags.Muffins',
+        'plugin.Muffin/Tags.Tagged',
+        'plugin.Muffin/Tags.Tags',
     ];
 
     public function setUp()
     {
         parent::setUp();
 
-        $table = TableRegistry::get('Muffins', ['table' => 'tags_muffins']);
+        $table = TableRegistry::get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
         $table->addBehavior('Muffin/Tags.Tag');
 
         $this->Table = $table;
@@ -182,5 +183,42 @@ class TagBehaviorTest extends TestCase
         $result = $this->Table->get($entity->id)->tag_count;
         $expected = 2;
         $this->assertEquals($expected, $result);
+    }
+
+    public function testCounterCacheDisabled()
+    {
+        $this->Table->removeBehavior('Tag');
+        $this->Table->Tagged->removeBehavior('CounterCache');
+
+        $this->Table->addBehavior('Muffin/Tags.Tag', [
+            'taggedCounter' => false
+        ]);
+
+        $count = $this->Table->get(1)->tag_count;
+
+        $data = [
+            'id' => 1,
+            'tags' => '1:Color, 2:Dark Color, new color',
+        ];
+
+        $entity = $this->Table->newEntity($data);
+        $this->Table->save($entity);
+
+        $result = $this->Table->get(1)->tag_count;
+        $this->assertEquals($count, $result);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Field "non_existent" does not exist in table "tags_buns"
+     */
+    public function testCounterCacheFieldException()
+    {
+        $table = TableRegistry::get('Muffin/Tags.Buns', ['table' => 'tags_buns']);
+        $table->addBehavior('Muffin/Tags.Tag', [
+            'taggedCounter' => [
+                'non_existent' => []
+            ]
+        ]);
     }
 }
