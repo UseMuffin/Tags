@@ -221,4 +221,9 @@ class TagBehaviorTest extends TestCase
             ]
         ]);
     }
+
+    public function testAssociationConditionsAreWorkingAsExpected()
+    {
+        $this->assertEquals(2, count($this->Table->get(1, ['contain' => ['Tags']])->tags));
+    }
 }

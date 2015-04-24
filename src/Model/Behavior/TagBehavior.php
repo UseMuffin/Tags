@@ -52,12 +52,6 @@ class TagBehavior extends Behavior
      */
     public function initialize(array $config)
     {
-        $tagsAssoc = $this->config('tagsAssoc');
-        $taggedAssoc = $this->config('taggedAssoc');
-
-        $tagsAssoc += ['through' => $taggedAssoc['className']];
-
-        $this->_configWrite('tagsAssoc', $tagsAssoc);
         $this->bindAssociations();
         $this->attachCounters();
     }
@@ -106,19 +100,26 @@ class TagBehavior extends Behavior
         $table = $this->_table;
         $tableAlias = $this->_table->alias();
 
+        $assocConditions = [$taggedAlias . '.fk_table' => $table->table()];
+
         if (!$table->association($taggedAlias)) {
-            $table->hasMany($taggedAlias, $taggedAssoc);
+            $table->hasMany($taggedAlias, $taggedAssoc + [
+                'foreignKey' => $tagsAssoc['foreignKey'],
+                'conditions' => $assocConditions,
+            ]);
         }
 
         if (!$table->association($tagsAlias)) {
-            $table->belongsToMany($tagsAlias, $tagsAssoc);
+            $table->belongsToMany($tagsAlias, $tagsAssoc + [
+                'through' => $table->{$taggedAlias},
+            ]);
         }
 
         if (!$table->{$tagsAlias}->association($tableAlias)) {
             $table->{$tagsAlias}
                 ->belongsToMany($tableAlias, [
-                    'className' => $table->table()
-                ] + $this->config('tagsAssoc'));
+                    'className' => $table->table(),
+                ] + $tagsAssoc);
         }
 
         if (!$table->{$taggedAlias}->association($tableAlias)) {
@@ -126,7 +127,7 @@ class TagBehavior extends Behavior
                 ->belongsTo($tableAlias, [
                     'className' => $table->table(),
                     'foreignKey' => $tagsAssoc['foreignKey'],
-                    'conditions' => [$table->{$taggedAlias}->aliasField('fk_table') => $table->table()],
+                    'conditions' => $assocConditions,
                 ]);
         }
 
@@ -135,7 +136,7 @@ class TagBehavior extends Behavior
                 ->belongsTo($tableAlias . $tagsAlias, [
                     'className' => $tagsAssoc['className'],
                     'foreignKey' => $tagsAssoc['targetForeignKey'],
-                    'conditions' => [$table->{$taggedAlias}->aliasField('fk_table') => $table->table()],
+                    'conditions' => $assocConditions,
                 ]);
         }
     }
