@@ -128,6 +128,7 @@ class TagBehavior extends Behavior
                     'className' => $table->table(),
                     'foreignKey' => $tagsAssoc['foreignKey'],
                     'conditions' => $assocConditions,
+                    'joinType' => 'INNER',
                 ]);
         }
 
@@ -137,6 +138,7 @@ class TagBehavior extends Behavior
                     'className' => $tagsAssoc['className'],
                     'foreignKey' => $tagsAssoc['targetForeignKey'],
                     'conditions' => $assocConditions,
+                    'joinType' => 'INNER',
                 ]);
         }
     }
