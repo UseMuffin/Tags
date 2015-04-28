@@ -164,6 +164,17 @@ class TagBehaviorTest extends TestCase
         $this->assertTrue($entity->dirty('tags'));
     }
 
+    public function testMarshalingWithEmptyTagsString()
+    {
+        $data = [
+            'name' => 'Muffin',
+            'tags' => '',
+        ];
+
+        $entity = $this->Table->newEntity($data);
+        $this->assertEquals(0, count($entity->get('tags')));
+    }
+
     public function testSaveIncrementsCounter()
     {
         $data = [

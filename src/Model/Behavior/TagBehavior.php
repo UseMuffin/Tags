@@ -77,9 +77,11 @@ class TagBehavior extends Behavior
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
         $field = $this->config('tagsAssoc.propertyName');
-
         if (!empty($data[$field]) && (!is_array($data[$field]) || !array_key_exists('_ids', $data[$field]))) {
             $data[$field] = $this->normalizeTags($data[$field]);
+        }
+        if (empty($data[$field])) {
+            unset($data[$field]);
         }
     }
 
