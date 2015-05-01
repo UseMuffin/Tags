@@ -196,6 +196,19 @@ class TagBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    /**
+     * testDenormalizeTags
+     *
+     * @return void
+     */
+    public function testDenormalizeTags()
+    {
+        $result = $this->Table->Tags->find()->limit(2)->all()->toArray();
+        $result = $this->Table->denormalizeTags($result);
+        $expected = 'Color, Dark Color';
+        $this->assertEquals($expected, $result);
+    }
+
     public function testCounterCacheDisabled()
     {
         $this->Table->removeBehavior('Tag');

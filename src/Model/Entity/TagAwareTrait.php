@@ -97,4 +97,15 @@ trait TagAwareTrait
         $assoc->saveStrategy($resetStrategy);
         return $result;
     }
+
+    /**
+     * Mutator to get the tags as string.
+     *
+     * @return string
+     */
+    public function _getTags()
+    {
+        $table = TableRegistry::get($this->source());
+        return $table->denormalizeTags($this->_properties['tags']);
+    }
 }

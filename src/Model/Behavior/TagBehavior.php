@@ -40,6 +40,7 @@ class TagBehavior extends Behavior
             'Model.beforeMarshal' => 'beforeMarshal',
         ],
         'implementedMethods' => [
+            'denormalizeTags' => 'denormalizeTags',
             'normalizeTags' => 'normalizeTags',
         ],
     ];
@@ -222,6 +223,21 @@ class TagBehavior extends Behavior
         }
 
         return $result;
+    }
+
+    /**
+     * Denormalizes tags.
+     *
+     * @param array Array or collection of tags.
+     * @return string Tags as string with delimiter.
+     */
+    public function denormalizeTags($tags)
+    {
+        $tagArray = [];
+        foreach ($tags as $tag) {
+            $tagArray[] = $tag['label'];
+        }
+        return implode($this->config('delimiter') . ' ', $tagArray);
     }
 
     /**
