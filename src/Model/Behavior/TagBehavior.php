@@ -113,7 +113,8 @@ class TagBehavior extends Behavior
 
         if (!$table->association($tagsAlias)) {
             $table->belongsToMany($tagsAlias, $tagsAssoc + [
-                'through' => $table->{$taggedAlias},
+                'through' => $table->{$taggedAlias}->target(),
+                'conditions' => $assocConditions
             ]);
         }
 
