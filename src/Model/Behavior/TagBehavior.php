@@ -80,7 +80,7 @@ class TagBehavior extends Behavior
         if (!empty($data[$field]) && (!is_array($data[$field]) || !array_key_exists('_ids', $data[$field]))) {
             $data[$field] = $this->normalizeTags($data[$field]);
         }
-        if (empty($data[$field])) {
+        if (isset($data[$field]) && empty($data[$field])) {
             unset($data[$field]);
         }
     }
