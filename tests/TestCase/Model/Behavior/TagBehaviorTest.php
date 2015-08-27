@@ -97,6 +97,17 @@ class TagBehaviorTest extends TestCase
             ],
         ];
         $this->assertEquals($expected, $result);
+
+        $result = $this->Behavior->normalizeTags('first, ');
+        $expected = [
+            [
+                'label' => 'first',
+                '_joinData' => [
+                    'fk_table' => 'tags_muffins',
+                ],
+            ],
+        ];
+        $this->assertEquals($expected, $result);
     }
 
     public function testMarshalingOnlyNewTags()
