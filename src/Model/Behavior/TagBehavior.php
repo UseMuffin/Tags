@@ -218,6 +218,9 @@ class TagBehavior extends Behavior
         $df = $tagsTable->displayField();
 
         foreach ($tags as $tag) {
+            if (empty(trim($tag))) {
+                continue;
+            }
             list($id, $label) = $this->_normalizeTag($tag);
             $result[] = $common + compact(empty($id) ? $df : $pk);
         }
