@@ -218,7 +218,8 @@ class TagBehavior extends Behavior
         $df = $tagsTable->displayField();
 
         foreach ($tags as $tag) {
-            if (empty(trim($tag))) {
+            $tag = trim($tag);
+            if (empty($tag)) {
                 continue;
             }
             list($id, $label) = $this->_normalizeTag($tag);
