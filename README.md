@@ -28,6 +28,12 @@ You then need to load the plugin. In `boostrap.php`, something like:
 ## Quick Start Guide
 
 You need to add the column *tag_count* to the taggable table
+
+then migrate the tables for the plugin 
+```
+bin/cake migration migrate -plugin Muffin/Tags
+```
+
 add the behavior 
 
 ```php
