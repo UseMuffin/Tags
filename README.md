@@ -27,26 +27,26 @@ You then need to load the plugin. In `boostrap.php`, something like:
 
 ## Quick Start Guide
 
-You need to add the column *tag_count* to the taggable table
+You need to add the column *tag_count* to the taggable table.
 
-then migrate the tables for the plugin 
+Then migrate the tables for the plugin:
 ```
-bin/cake migration migrate -plugin Muffin/Tags
+bin/cake migrations migrate -p Muffin/Tags
 ```
 
-add the behavior 
+Add the behavior:
 
 ```php
 $this->addBehavior('Muffin/Tags.Tag');
 ```
 
-and in the view
+And in the view:
 
 ```php
 echo $this->Form->input('tags');
 ```
 
-Enjoy tagging
+Enjoy tagging!
 
 ## Patches & Features
 
