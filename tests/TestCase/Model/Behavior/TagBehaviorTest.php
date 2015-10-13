@@ -32,6 +32,21 @@ class TagBehaviorTest extends TestCase
         unset($this->Behavior);
     }
 
+    public function testSavingDuplicates()
+    {
+        $entity = $this->Table->newEntity([
+            'name' => 'Duplicate Tags?',
+            'tags' => 'Color, Dark Color'
+        ]);
+        $this->Table->save($entity);
+        $Tags = $this->Table->Tagged->Tags;
+        $count = $Tags->find()->where(['label' => 'Color'])->count();
+        $this->assertEquals(1, $count);
+        $count = $Tags->find()->where(['label' => 'Dark Color'])->count();
+        $this->assertEquals(1, $count);
+    }
+
+
     public function testDefaultInitialize()
     {
         $belongsToMany = $this->Table->association('Tags');
