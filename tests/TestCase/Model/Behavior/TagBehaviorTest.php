@@ -74,51 +74,58 @@ class TagBehaviorTest extends TestCase
     {
         $result = $this->Behavior->normalizeTags('foo, 3:foobar, bar');
         $expected = [
-            [
+            0 => [
+                '_joinData' => [
+                    'fk_table' => 'tags_muffins'
+                ],
                 'label' => 'foo',
-                '_joinData' => [
-                    'fk_table' => 'tags_muffins',
-                ],
+                'key' => 'foo'
             ],
-            [
-                'id' => 3,
+            1 => [
                 '_joinData' => [
-                    'fk_table' => 'tags_muffins',
+                    'fk_table' => 'tags_muffins'
                 ],
+                'id' => '3',
+                'key' => '3-foobar'
             ],
-            [
+            2 => [
+                '_joinData' => [
+                    'fk_table' => 'tags_muffins'
+                ],
                 'label' => 'bar',
-                '_joinData' => [
-                    'fk_table' => 'tags_muffins',
-                ],
-            ],
+                'key' => 'bar'
+            ]
         ];
         $this->assertEquals($expected, $result);
 
         $result = $this->Behavior->normalizeTags(['foo', 'bar']);
         $expected = [
-            [
+            0 => [
+                '_joinData' => [
+                    'fk_table' => 'tags_muffins'
+                ],
                 'label' => 'foo',
-                '_joinData' => [
-                    'fk_table' => 'tags_muffins',
-                ],
+                'key' => 'foo'
             ],
-            [
+            1 => [
+                '_joinData' => [
+                    'fk_table' => 'tags_muffins'
+                ],
                 'label' => 'bar',
-                '_joinData' => [
-                    'fk_table' => 'tags_muffins',
-                ],
-            ],
+                'key' => 'bar'
+            ]
         ];
+
         $this->assertEquals($expected, $result);
 
         $result = $this->Behavior->normalizeTags('first, ');
         $expected = [
             [
-                'label' => 'first',
                 '_joinData' => [
                     'fk_table' => 'tags_muffins',
                 ],
+                'label' => 'first',
+                'key' => 'first',
             ],
         ];
         $this->assertEquals($expected, $result);
