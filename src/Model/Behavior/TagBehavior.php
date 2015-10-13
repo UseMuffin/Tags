@@ -222,11 +222,30 @@ class TagBehavior extends Behavior
             if (empty($tag)) {
                 continue;
             }
+            $existingTag = $this->_tagExists($tag);
+            if (!empty($existingTag)) {
+                $result[] = $common + ['id' => $existingTag];
+                continue;
+            }
             list($id, $label) = $this->_normalizeTag($tag);
             $result[] = $common + compact(empty($id) ? $df : $pk);
         }
 
         return $result;
+    }
+
+    protected function _tagExists($tag)
+    {
+        $tagsTable = $this->_table->{$this->config('tagsAlias')}->target();
+        $result = $tagsTable->find()
+            ->where([
+                $tagsTable->aliasField('label') => $tag,
+            ])
+            ->first();
+        if (!empty($result)) {
+            return $result->id;
+        }
+        return null;
     }
 
     /**

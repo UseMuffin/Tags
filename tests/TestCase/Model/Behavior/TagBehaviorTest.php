@@ -46,7 +46,6 @@ class TagBehaviorTest extends TestCase
         $this->assertEquals(1, $count);
     }
 
-
     public function testDefaultInitialize()
     {
         $belongsToMany = $this->Table->association('Tags');
