@@ -244,7 +244,8 @@ class TagBehavior extends Behavior
      * @param string $tag Tag label.
      * @return string
      */
-    protected function _getTagKey($tag) {
+    protected function _getTagKey($tag)
+    {
         return strtolower(Inflector::slug($tag));
     }
 
@@ -252,7 +253,7 @@ class TagBehavior extends Behavior
      * Checks if a tag already exists and returns the id if yes.
      *
      * @param string $tag Tag key.
-     * @return null|integer
+     * @return null|int
      */
     protected function _tagExists($tag)
     {
