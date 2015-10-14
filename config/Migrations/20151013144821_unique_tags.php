@@ -29,13 +29,13 @@ class UniqueTags extends AbstractMigration
     {
         $table = $this->table('tags_tags');
 
-        $table->addColumn('key', 'string', [
+        $table->addColumn('tag_key', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,
         ]);
 
-        $table->addIndex(['key', 'label', 'namespace'], ['unique' => true]);
+        $table->addIndex(['tag_key', 'label', 'namespace'], ['unique' => true]);
         $table->save();
 
         $table = $this->table('tags_tagged');

@@ -79,21 +79,21 @@ class TagBehaviorTest extends TestCase
                     'fk_table' => 'tags_muffins'
                 ],
                 'label' => 'foo',
-                'key' => 'foo'
+                'tag_key' => 'foo'
             ],
             1 => [
                 '_joinData' => [
                     'fk_table' => 'tags_muffins'
                 ],
                 'id' => '3',
-                'key' => '3-foobar'
+                'tag_key' => '3-foobar'
             ],
             2 => [
                 '_joinData' => [
                     'fk_table' => 'tags_muffins'
                 ],
                 'label' => 'bar',
-                'key' => 'bar'
+                'tag_key' => 'bar'
             ]
         ];
         $this->assertEquals($expected, $result);
@@ -105,14 +105,14 @@ class TagBehaviorTest extends TestCase
                     'fk_table' => 'tags_muffins'
                 ],
                 'label' => 'foo',
-                'key' => 'foo'
+                'tag_key' => 'foo'
             ],
             1 => [
                 '_joinData' => [
                     'fk_table' => 'tags_muffins'
                 ],
                 'label' => 'bar',
-                'key' => 'bar'
+                'tag_key' => 'bar'
             ]
         ];
 
@@ -125,7 +125,7 @@ class TagBehaviorTest extends TestCase
                     'fk_table' => 'tags_muffins',
                 ],
                 'label' => 'first',
-                'key' => 'first',
+                'tag_key' => 'first',
             ],
         ];
         $this->assertEquals($expected, $result);

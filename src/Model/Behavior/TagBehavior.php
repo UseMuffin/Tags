@@ -223,15 +223,15 @@ class TagBehavior extends Behavior
             if (empty($tag)) {
                 continue;
             }
-            $key = $this->_getTagKey($tag);
-            $existingTag = $this->_tagExists($key);
+            $tagKey = $this->_getTagKey($tag);
+            $existingTag = $this->_tagExists($tagKey);
             if (!empty($existingTag)) {
                 $result[] = $common + ['id' => $existingTag];
                 continue;
             }
             list($id, $label) = $this->_normalizeTag($tag);
             $result[] = $common + compact(empty($id) ? $df : $pk) + [
-                'key' => $key
+                'tag_key' => $tagKey
             ];
         }
 
@@ -260,7 +260,7 @@ class TagBehavior extends Behavior
         $tagsTable = $this->_table->{$this->config('tagsAlias')}->target();
         $result = $tagsTable->find()
             ->where([
-                $tagsTable->aliasField('key') => $tag,
+                $tagsTable->aliasField('tag_key') => $tag,
             ])
             ->select([
                 $tagsTable->aliasField($tagsTable->primaryKey())
@@ -281,15 +281,15 @@ class TagBehavior extends Behavior
      */
     protected function _normalizeTag($tag)
     {
-        $id = null;
+        $namespace = null;
         $label = $tag;
         $separator = $this->config('separator');
         if (strpos($tag, $separator) !== false) {
-            list($id, $label) = explode($separator, $tag);
+            list($namespace, $label) = explode($separator, $tag);
         }
 
         return [
-            trim($id),
+            trim($namespace),
             trim($label)
         ];
     }
