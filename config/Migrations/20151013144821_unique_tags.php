@@ -41,6 +41,6 @@ class UniqueTags extends AbstractMigration
         $table = $this->table('tags_tagged');
 
         $table->addIndex(['tag_id', 'fk_id', 'fk_table'], ['unique' => true]);
-        $table->save();
+        $table->create();
     }
 }
