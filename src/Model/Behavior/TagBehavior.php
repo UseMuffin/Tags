@@ -7,6 +7,7 @@ use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 use RuntimeException;
 
 class TagBehavior extends Behavior
@@ -222,11 +223,53 @@ class TagBehavior extends Behavior
             if (empty($tag)) {
                 continue;
             }
+            $tagKey = $this->_getTagKey($tag);
+            $existingTag = $this->_tagExists($tagKey);
+            if (!empty($existingTag)) {
+                $result[] = $common + ['id' => $existingTag];
+                continue;
+            }
             list($id, $label) = $this->_normalizeTag($tag);
-            $result[] = $common + compact(empty($id) ? $df : $pk);
+            $result[] = $common + compact(empty($id) ? $df : $pk) + [
+                'tag_key' => $tagKey
+            ];
         }
 
         return $result;
+    }
+
+    /**
+     * Generates the unique tag key.
+     *
+     * @param string $tag Tag label.
+     * @return string
+     */
+    protected function _getTagKey($tag)
+    {
+        return strtolower(Inflector::slug($tag));
+    }
+
+    /**
+     * Checks if a tag already exists and returns the id if yes.
+     *
+     * @param string $tag Tag key.
+     * @return null|int
+     */
+    protected function _tagExists($tag)
+    {
+        $tagsTable = $this->_table->{$this->config('tagsAlias')}->target();
+        $result = $tagsTable->find()
+            ->where([
+                $tagsTable->aliasField('tag_key') => $tag,
+            ])
+            ->select([
+                $tagsTable->aliasField($tagsTable->primaryKey())
+            ])
+            ->first();
+        if (!empty($result)) {
+            return $result->id;
+        }
+        return null;
     }
 
     /**
@@ -238,15 +281,15 @@ class TagBehavior extends Behavior
      */
     protected function _normalizeTag($tag)
     {
-        $id = null;
+        $namespace = null;
         $label = $tag;
         $separator = $this->config('separator');
         if (strpos($tag, $separator) !== false) {
-            list($id, $label) = explode($separator, $tag);
+            list($namespace, $label) = explode($separator, $tag);
         }
 
         return [
-            trim($id),
+            trim($namespace),
             trim($label)
         ];
     }

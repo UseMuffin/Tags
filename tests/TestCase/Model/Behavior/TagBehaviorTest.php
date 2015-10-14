@@ -32,6 +32,20 @@ class TagBehaviorTest extends TestCase
         unset($this->Behavior);
     }
 
+    public function testSavingDuplicates()
+    {
+        $entity = $this->Table->newEntity([
+            'name' => 'Duplicate Tags?',
+            'tags' => 'Color, Dark Color'
+        ]);
+        $this->Table->save($entity);
+        $Tags = $this->Table->Tagged->Tags;
+        $count = $Tags->find()->where(['label' => 'Color'])->count();
+        $this->assertEquals(1, $count);
+        $count = $Tags->find()->where(['label' => 'Dark Color'])->count();
+        $this->assertEquals(1, $count);
+    }
+
     public function testDefaultInitialize()
     {
         $belongsToMany = $this->Table->association('Tags');
@@ -60,51 +74,58 @@ class TagBehaviorTest extends TestCase
     {
         $result = $this->Behavior->normalizeTags('foo, 3:foobar, bar');
         $expected = [
-            [
+            0 => [
+                '_joinData' => [
+                    'fk_table' => 'tags_muffins'
+                ],
                 'label' => 'foo',
-                '_joinData' => [
-                    'fk_table' => 'tags_muffins',
-                ],
+                'tag_key' => 'foo'
             ],
-            [
-                'id' => 3,
+            1 => [
                 '_joinData' => [
-                    'fk_table' => 'tags_muffins',
+                    'fk_table' => 'tags_muffins'
                 ],
+                'id' => '3',
+                'tag_key' => '3-foobar'
             ],
-            [
+            2 => [
+                '_joinData' => [
+                    'fk_table' => 'tags_muffins'
+                ],
                 'label' => 'bar',
-                '_joinData' => [
-                    'fk_table' => 'tags_muffins',
-                ],
-            ],
+                'tag_key' => 'bar'
+            ]
         ];
         $this->assertEquals($expected, $result);
 
         $result = $this->Behavior->normalizeTags(['foo', 'bar']);
         $expected = [
-            [
+            0 => [
+                '_joinData' => [
+                    'fk_table' => 'tags_muffins'
+                ],
                 'label' => 'foo',
-                '_joinData' => [
-                    'fk_table' => 'tags_muffins',
-                ],
+                'tag_key' => 'foo'
             ],
-            [
+            1 => [
+                '_joinData' => [
+                    'fk_table' => 'tags_muffins'
+                ],
                 'label' => 'bar',
-                '_joinData' => [
-                    'fk_table' => 'tags_muffins',
-                ],
-            ],
+                'tag_key' => 'bar'
+            ]
         ];
+
         $this->assertEquals($expected, $result);
 
         $result = $this->Behavior->normalizeTags('first, ');
         $expected = [
             [
-                'label' => 'first',
                 '_joinData' => [
                     'fk_table' => 'tags_muffins',
                 ],
+                'label' => 'first',
+                'tag_key' => 'first',
             ],
         ];
         $this->assertEquals($expected, $result);

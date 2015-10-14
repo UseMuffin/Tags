@@ -10,6 +10,7 @@ class TagsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer'],
         'namespace' => ['type' => 'string', 'length' => 255, 'null' => true],
+        'tag_key' => ['type' => 'string', 'length' => 255],
         'slug' => ['type' => 'string', 'length' => 255],
         'label' => ['type' => 'string', 'length' => 255],
         'counter' => ['type' => 'integer', 'unsigned' => true, 'default' => 0, 'null' => true],
@@ -23,12 +24,14 @@ class TagsFixture extends TestFixture
     public $records = [
         [
             'namespace' => null,
+            'tag_key' => 'color',
             'slug' => 'color',
             'label' => 'Color',
             'counter' => 3,
         ],
         [
             'namespace' => null,
+            'tag_key' => 'dark-color',
             'slug' => 'dark-color',
             'label' => 'Dark Color',
             'counter' => 2,
