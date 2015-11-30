@@ -43,6 +43,7 @@ class TagBehavior extends Behavior
         'implementedMethods' => [
             'normalizeTags' => 'normalizeTags',
         ],
+        'fkTableField' => 'fk_table'
     ];
 
     /**
@@ -103,7 +104,7 @@ class TagBehavior extends Behavior
         $table = $this->_table;
         $tableAlias = $this->_table->alias();
 
-        $assocConditions = [$taggedAlias . '.fk_table' => $table->table()];
+        $assocConditions = [$taggedAlias . '.' . $this->config('fkTableField') => $table->table()];
 
         if (!$table->association($taggedAlias)) {
             $table->hasMany($taggedAlias, $taggedAssoc + [
@@ -189,7 +190,7 @@ class TagBehavior extends Behavior
         if (!$counterCache->config($taggedAlias)) {
             $field = key($config['taggedCounter']);
             $config['taggedCounter']['tag_count']['conditions'] = [
-                $taggedTable->aliasField('fk_table') => $this->_table->table()
+                $taggedTable->aliasField($this->config('fkTableField')) => $this->_table->table()
             ];
             $counterCache->config($this->_table->alias(), $config['taggedCounter']);
         }
@@ -209,7 +210,7 @@ class TagBehavior extends Behavior
 
         $result = [];
 
-        $common = ['_joinData' => ['fk_table' => $this->_table->table()]];
+        $common = ['_joinData' => [$this->config('fkTableField') => $this->_table->table()]];
         if ($namespace = $this->config('namespace')) {
             $common += compact('namespace');
         }
