@@ -3,7 +3,6 @@ namespace Muffin\Tags\Model\Behavior;
 
 use ArrayObject;
 use Cake\Event\Event;
-use Cake\Network\Request;
 use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
 use Cake\ORM\Query;
