@@ -3,8 +3,10 @@ namespace Muffin\Tags\Model\Behavior;
 
 use ArrayObject;
 use Cake\Event\Event;
+use Cake\Network\Request;
 use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
@@ -21,6 +23,7 @@ class TagBehavior extends Behavior
         'delimiter' => ',',
         'separator' => ':',
         'namespace' => null,
+        'finderField' =>  'tag',
         'tagsAlias' => 'Tags',
         'tagsAssoc' => [
             'className' => 'Muffin/Tags.Tags',
@@ -37,11 +40,14 @@ class TagBehavior extends Behavior
         'taggedCounter' => ['tag_count' => [
             'conditions' => []
         ]],
+        'implementedFinders' => [
+            'tagged' => 'findByTag'
+        ],
         'implementedEvents' => [
-            'Model.beforeMarshal' => 'beforeMarshal',
+            'Model.beforeMarshal' => 'beforeMarshal'
         ],
         'implementedMethods' => [
-            'normalizeTags' => 'normalizeTags',
+            'normalizeTags' => 'normalizeTags'
         ],
         'fkTableField' => 'fk_table'
     ];
@@ -85,6 +91,29 @@ class TagBehavior extends Behavior
         if (isset($data[$field]) && empty($data[$field])) {
             unset($data[$field]);
         }
+    }
+
+    /**
+     * Finder method
+     * usage  $query->find('tagged', ['{finderField}' => 'example_tag' ] );
+     *
+     * @param Query $query
+     * @param array $options
+     */
+    public function findByTag(Query $query, array $options){
+
+        if(!empty($options[$this->config('finderField')])){
+            $query->matching($this->config('tagsAlias'), function ($q) use ($options) {
+                return $q->where([
+                    'OR' => [
+                        $this->config('tagsAlias').'.slug' => $options[$this->config('finderField')],
+                        $this->config('tagsAlias').'.label' => $options[$this->config('finderField')]
+                        ]
+                    ]
+                );
+            });
+        }
+
     }
 
     /**
