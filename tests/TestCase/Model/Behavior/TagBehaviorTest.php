@@ -5,6 +5,9 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Muffin\Tags\Model\Behavior\TagBehavior;
 
+/**
+ * TagBehaviorTest
+ */
 class TagBehaviorTest extends TestCase
 {
     public $fixtures = [

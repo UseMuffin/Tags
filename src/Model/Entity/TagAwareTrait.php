@@ -5,6 +5,9 @@ use Cake\Collection\Collection;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
+/**
+ * TagAwareTrait
+ */
 trait TagAwareTrait
 {
 
@@ -35,9 +38,9 @@ trait TagAwareTrait
 
         $table = TableRegistry::get($this->source());
         $behavior = $table->behaviors()->Tag;
-        $assoc = $table->association($behavior->config('tagsAlias'));
-        $property = $assoc->property();
-        $id = $this->get($table->primaryKey());
+        $assoc = $table->getAssociation($behavior->config('tagsAlias'));
+        $property = $assoc->getProperty();
+        $id = $this->get($table->getPrimaryKey());
         $untags = $behavior->normalizeTags($tags);
 
         if (!$tags = $this->get($property)) {
@@ -46,8 +49,8 @@ trait TagAwareTrait
         }
 
         $tagsTable = $table->{$behavior->config('tagsAlias')};
-        $pk = $tagsTable->primaryKey();
-        $df = $tagsTable->displayField();
+        $pk = $tagsTable->getPrimaryKey();
+        $df = $tagsTable->getDisplayField();
 
         foreach ($tags as $k => $tag) {
             $tags[$k] = [
@@ -89,10 +92,10 @@ trait TagAwareTrait
     {
         $table = TableRegistry::get($this->source());
         $behavior = $table->behaviors()->Tag;
-        $assoc = $table->association($behavior->config('tagsAlias'));
+        $assoc = $table->getAssociation($behavior->config('tagsAlias'));
         $resetStrategy = $assoc->saveStrategy();
         $assoc->saveStrategy($saveStrategy);
-        $table->patchEntity($this, [$assoc->property() => $tags]);
+        $table->patchEntity($this, [$assoc->getProperty() => $tags]);
         $result = $table->save($this);
         $assoc->saveStrategy($resetStrategy);
         return $result;
