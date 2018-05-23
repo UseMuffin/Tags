@@ -218,7 +218,7 @@ class TagBehavior extends Behavior
         }
 
         $tagsTable = $this->_table->{$this->getConfig('tagsAlias')};
-        $pk = $tagsTable->getProperty();
+        $pk = $tagsTable->getPrimaryKey();
         $df = $tagsTable->getDisplayField();
 
         foreach ($tags as $tag) {
