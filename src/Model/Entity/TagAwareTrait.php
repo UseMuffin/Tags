@@ -38,17 +38,17 @@ trait TagAwareTrait
 
         $table = TableRegistry::get($this->source());
         $behavior = $table->behaviors()->Tag;
-        $assoc = $table->getAssociation($behavior->config('tagsAlias'));
+        $assoc = $table->getAssociation($behavior->getConfig('tagsAlias'));
         $property = $assoc->getProperty();
         $id = $this->get($table->getPrimaryKey());
         $untags = $behavior->normalizeTags($tags);
 
         if (!$tags = $this->get($property)) {
-            $contain = [$behavior->config('tagsAlias')];
+            $contain = [$behavior->getConfig('tagsAlias')];
             $tags = $table->get($id, compact('contain'))->get($property);
         }
 
-        $tagsTable = $table->{$behavior->config('tagsAlias')};
+        $tagsTable = $table->{$behavior->getConfig('tagsAlias')};
         $pk = $tagsTable->getPrimaryKey();
         $df = $tagsTable->getDisplayField();
 
@@ -92,12 +92,12 @@ trait TagAwareTrait
     {
         $table = TableRegistry::get($this->source());
         $behavior = $table->behaviors()->Tag;
-        $assoc = $table->getAssociation($behavior->config('tagsAlias'));
-        $resetStrategy = $assoc->saveStrategy();
-        $assoc->saveStrategy($saveStrategy);
+        $assoc = $table->getAssociation($behavior->getConfig('tagsAlias'));
+        $resetStrategy = $assoc->getSaveStrategy();
+        $assoc->setSaveStrategy($saveStrategy);
         $table->patchEntity($this, [$assoc->getProperty() => $tags]);
         $result = $table->save($this);
-        $assoc->saveStrategy($resetStrategy);
+        $assoc->setSaveStrategy($resetStrategy);
 
         return $result;
     }

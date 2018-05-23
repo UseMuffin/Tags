@@ -4,10 +4,7 @@ namespace Muffin\Tags\Model\Behavior;
 use ArrayObject;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
-use Cake\ORM\Entity;
-use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
-use Cake\Utility\Inflector;
+use Cake\Utility\Text;
 use RuntimeException;
 
 /**
@@ -68,7 +65,7 @@ class TagBehavior extends Behavior
      */
     public function implementedEvents()
     {
-        return $this->config('implementedEvents');
+        return $this->getConfig('implementedEvents');
     }
 
     /**
@@ -107,16 +104,22 @@ class TagBehavior extends Behavior
         $table = $this->_table;
         $tableAlias = $this->_table->getAlias();
 
+        // 3.5 compatibility
+        $hasAssociation = 'hasAssociation';
+        if (!method_exists($table, 'hasAssociation')) {
+            $hasAssociation = 'association';
+        }
+
         $assocConditions = [$taggedAlias . '.' . $this->getConfig('fkTableField') => $table->getTable()];
 
-        if (!$table->hasAssociation($taggedAlias)) {
+        if (!$table->{$hasAssociation}($taggedAlias)) {
             $table->hasMany($taggedAlias, $taggedAssoc + [
                 'foreignKey' => $tagsAssoc['foreignKey'],
                 'conditions' => $assocConditions,
             ]);
         }
 
-        if (!$table->hasAssociation($tagsAlias)) {
+        if (!$table->{$hasAssociation}($tagsAlias)) {
             $table->belongsToMany($tagsAlias, $tagsAssoc + [
                 'through' => $table->{$taggedAlias}->getTarget(),
                 'conditions' => $assocConditions
@@ -172,8 +175,8 @@ class TagBehavior extends Behavior
 
         $counterCache = $taggedTable->behaviors()->CounterCache;
 
-        if (!$counterCache->config($tagsAlias)) {
-            $counterCache->config($tagsAlias, $config['tagsCounter']);
+        if (!$counterCache->getConfig($tagsAlias)) {
+            $counterCache->setConfig($tagsAlias, $config['tagsCounter']);
         }
 
         if ($config['taggedCounter'] === false) {
@@ -190,11 +193,11 @@ class TagBehavior extends Behavior
             }
         }
 
-        if (!$counterCache->config($taggedAlias)) {
+        if (!$counterCache->getConfig($taggedAlias)) {
             $config['taggedCounter']['tag_count']['conditions'] = [
                 $taggedTable->aliasField($this->getConfig('fkTableField')) => $this->_table->getTable()
             ];
-            $counterCache->config($this->_table->getAlias(), $config['taggedCounter']);
+            $counterCache->setConfig($this->_table->getAlias(), $config['taggedCounter']);
         }
     }
 
@@ -207,7 +210,7 @@ class TagBehavior extends Behavior
     public function normalizeTags($tags)
     {
         if (is_string($tags)) {
-            $tags = explode($this->config('delimiter'), $tags);
+            $tags = explode($this->getConfig('delimiter'), $tags);
         }
 
         $result = [];
@@ -249,7 +252,7 @@ class TagBehavior extends Behavior
      */
     protected function _getTagKey($tag)
     {
-        return strtolower(Inflector::slug($tag));
+        return strtolower(Text::slug($tag));
     }
 
     /**
