@@ -269,9 +269,11 @@ class TagBehavior extends Behavior
                 $tagsTable->aliasField($tagsTable->getPrimaryKey())
             ])
             ->first();
+
         if (!empty($result)) {
             return $result->id;
         }
+
         return null;
     }
 

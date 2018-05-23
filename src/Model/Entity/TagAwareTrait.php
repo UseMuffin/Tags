@@ -98,6 +98,7 @@ trait TagAwareTrait
         $table->patchEntity($this, [$assoc->getProperty() => $tags]);
         $result = $table->save($this);
         $assoc->saveStrategy($resetStrategy);
+
         return $result;
     }
 }
