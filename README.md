@@ -5,7 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/muffin/tags.svg?style=flat-square)](https://packagist.org/packages/muffin/tags)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
-{{@TODO description}}
+This plugin allows you to simply tag record in your database with multiple tags.
 
 ## Install
 

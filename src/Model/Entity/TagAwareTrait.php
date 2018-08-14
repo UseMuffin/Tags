@@ -1,9 +1,7 @@
 <?php
 namespace Muffin\Tags\Model\Entity;
 
-use Cake\Collection\Collection;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Hash;
 
 trait TagAwareTrait
 {
@@ -33,22 +31,22 @@ trait TagAwareTrait
             return $this->_updateTags([], 'replace');
         }
 
-        $table = TableRegistry::get($this->source());
+        $table = TableRegistry::getTableLocator()->get($this->source());
         $behavior = $table->behaviors()->Tag;
-        $assoc = $table->association($behavior->config('tagsAlias'));
-        $property = $assoc->property();
-        $id = $this->get($table->primaryKey());
+        $assoc = $table->getAssociation($behavior->getConfig('tagsAlias'));
+        $property = $assoc->getProperty();
+        $id = $this->get($table->getPrimaryKey());
         $untags = $behavior->normalizeTags($tags);
 
         if (!$tags = $this->get($property)) {
-            $contain = [$behavior->config('tagsAlias')];
+            $contain = [$behavior->getConfig('tagsAlias')];
             $tags = $table->get($id, compact('contain'))->get($property);
         }
 
-        $tagsTable = $table->{$behavior->config('tagsAlias')};
-        $pk = $tagsTable->primaryKey();
-        $df = $tagsTable->displayField();
-
+        $tagsTable = $table->{$behavior->getConfig('tagsAlias')};
+        $pk = $tagsTable->getPrimaryKey();
+        $df = $tagsTable->getDisplayField();
+        
         foreach ($tags as $k => $tag) {
             $tags[$k] = [
                 $pk => $tag->{$pk},
@@ -87,14 +85,14 @@ trait TagAwareTrait
      */
     protected function _updateTags($tags, $saveStrategy)
     {
-        $table = TableRegistry::get($this->source());
+        $table = TableRegistry::getTableLocator()->get($this->source());
         $behavior = $table->behaviors()->Tag;
-        $assoc = $table->association($behavior->config('tagsAlias'));
-        $resetStrategy = $assoc->saveStrategy();
-        $assoc->saveStrategy($saveStrategy);
-        $table->patchEntity($this, [$assoc->property() => $tags]);
+        $assoc = $table->getAssociation($behavior->getConfig('tagsAlias'));
+        $resetStrategy = $assoc->getSaveStrategy();
+        $assoc->setSaveStrategy($saveStrategy);
+        $table->patchEntity($this, [$assoc->getProperty() => $tags]);
         $result = $table->save($this);
-        $assoc->saveStrategy($resetStrategy);
+        $assoc->setSaveStrategy($resetStrategy);
         return $result;
     }
 }

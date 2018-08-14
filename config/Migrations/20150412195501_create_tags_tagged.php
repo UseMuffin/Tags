@@ -1,5 +1,6 @@
 <?php
-use Phinx\Migration\AbstractMigration;
+
+use Migrations\AbstractMigration;
 
 class CreateTagsTagged extends AbstractMigration
 {
