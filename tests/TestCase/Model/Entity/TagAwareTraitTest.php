@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Muffin\Tags\Test\TestCase\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -28,7 +30,7 @@ class TagAwareTraitTest extends TestCase
     {
         parent::setUp();
 
-        $table = TableRegistry::get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
+        $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
         $table->addBehavior('Muffin/Tags.Tag');
 
         $this->Table = $table;

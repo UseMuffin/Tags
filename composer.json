@@ -30,10 +30,11 @@
         "source": "https://github.com/usemuffin/tags"
     },
     "require": {
-        "cakephp/orm": "^3.5"
+        "cakephp/orm": "^3.6"
     },
     "require-dev": {
-        "cakephp/cakephp": "^3.5",
+        "php": "^7.1",
+        "cakephp/cakephp": "^3.6",
         "phpunit/phpunit": "^5.7.3|^6.0",
         "muffin/slug": "^1.0"
     },

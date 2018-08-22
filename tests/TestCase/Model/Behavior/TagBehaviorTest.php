@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Muffin\Tags\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
@@ -21,7 +23,7 @@ class TagBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $table = TableRegistry::get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
+        $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
         $table->addBehavior('Muffin/Tags.Tag');
 
         $this->Table = $table;
@@ -31,7 +33,7 @@ class TagBehaviorTest extends TestCase
     public function tearDown()
     {
         parent::tearDown();
-        TableRegistry::clear();
+        TableRegistry::getTableLocator()->clear();
         unset($this->Behavior);
     }
 

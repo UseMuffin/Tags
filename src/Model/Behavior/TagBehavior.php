@@ -1,19 +1,34 @@
 <?php
+declare(strict_types=1);
+
 namespace Muffin\Tags\Model\Behavior;
 
 use ArrayObject;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
+use Cake\ORM\Entity;
+use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 use Cake\Utility\Text;
+use InvalidArgumentException;
 use RuntimeException;
 
 /**
- * TagBehavior
+ * Tag Behavior
  */
 class TagBehavior extends Behavior
 {
     /**
-     * Configuration.
+     * Configuration Options
+     * - delimiter: The delimiter used to explode() the tags. Default is comma.
+     * - separator: Namespace separator, by default semicolon.
+     * - identifier: The value of the field that is used to associate a tagged
+     *   entry with a specific model. This is required if you use int vs UUID
+     *   ids to get an unique composite of the tag id, model and model id. If
+     *   not specified the behavior will use the table name by default.
+     * - fieldMap: An array that maps fields the behavior is using to the fields
+     *   in the tags and tagged tables.
      *
      * @var array
      */
@@ -21,6 +36,7 @@ class TagBehavior extends Behavior
         'delimiter' => ',',
         'separator' => ':',
         'namespace' => null,
+        // Tags table setup
         'tagsAlias' => 'Tags',
         'tagsAssoc' => [
             'className' => 'Muffin/Tags.Tags',
@@ -29,22 +45,56 @@ class TagBehavior extends Behavior
             'targetForeignKey' => 'tag_id',
             'propertyName' => 'tags',
         ],
-        'tagsCounter' => ['counter'],
+        // Tagged table setup
         'taggedAlias' => 'Tagged',
         'taggedAssoc' => [
-            'className' => 'Muffin/Tags.Tagged',
+            'className' => 'Tagged',
         ],
+        // Tags counter setup
         'taggedCounter' => ['tag_count' => [
             'conditions' => []
         ]],
+        'tagsCounter' => [
+            'counter'
+        ],
+        // Events
         'implementedEvents' => [
             'Model.beforeMarshal' => 'beforeMarshal',
         ],
+        // Implemented methods
         'implementedMethods' => [
             'normalizeTags' => 'normalizeTags',
+            'tagExists' => 'tagExists'
         ],
-        'fkTableField' => 'fk_table'
+        'identifier' => null,
+        // Allows you to map any of the fields we use to whatever is the
+        // fieldname in your table
+        'fieldMap' => [
+            'tag_name' => 'label',
+            'tag_namespace' => 'namespace',
+            'tag_keyname' => 'tag_key',
+            'tagged_model' => 'fk_table'
+        ]
     ];
+
+    /**
+     * Gets a field name from the field map
+     *
+     * @param $field Field name
+     * @return string
+     */
+    protected function getField(string $field): string
+    {
+        $field = $this->getConfig('fieldMap.' . $field);
+        if (empty($field)) {
+            throw new InvalidArgumentException(sprintf(
+                'There is no field mapped to `%s`',
+                $field
+            ));
+        }
+
+        return $field;
+    }
 
     /**
      * Initialize configuration.
@@ -96,47 +146,44 @@ class TagBehavior extends Behavior
     public function bindAssociations()
     {
         $config = $this->getConfig();
+
         $tagsAlias = $config['tagsAlias'];
         $tagsAssoc = $config['tagsAssoc'];
+
         $taggedAlias = $config['taggedAlias'];
         $taggedAssoc = $config['taggedAssoc'];
 
-        $table = $this->_table;
-        $tableAlias = $this->_table->getAlias();
+        $table = $this->getTable();
+        $tableClass = get_class($table);
+        $tableAlias = $this->getTable()->getAlias();
 
-        // 3.5 compatibility
-        $hasAssociation = 'hasAssociation';
-        if (!method_exists($table, 'hasAssociation')) {
-            $hasAssociation = 'association';
-        }
+        $assocConditions = [$taggedAlias . '.' . $this->getField('tagged_model') => $this->getIdentifier()];
 
-        $assocConditions = [$taggedAlias . '.' . $this->getConfig('fkTableField') => $table->getTable()];
-
-        if (!$table->{$hasAssociation}($taggedAlias)) {
+        if (!$table->hasAssociation($taggedAlias)) {
             $table->hasMany($taggedAlias, $taggedAssoc + [
-                'foreignKey' => $tagsAssoc['foreignKey'],
-                'conditions' => $assocConditions,
-            ]);
+                    'foreignKey' => $tagsAssoc['foreignKey'],
+                    'conditions' => $assocConditions,
+                ]);
         }
 
-        if (!$table->{$hasAssociation}($tagsAlias)) {
+        if (!$table->hasAssociation($tagsAlias)) {
             $table->belongsToMany($tagsAlias, $tagsAssoc + [
-                'through' => $table->{$taggedAlias}->getTarget(),
-                'conditions' => $assocConditions
-            ]);
+                    'through' => $table->{$taggedAlias}->getTarget(),
+                    'conditions' => $assocConditions
+                ]);
         }
 
         if (!$table->{$tagsAlias}->hasAssociation($tableAlias)) {
             $table->{$tagsAlias}
                 ->belongsToMany($tableAlias, [
-                    'className' => $table->getTable(),
-                ] + $tagsAssoc);
+                        'className' => $tableClass,
+                    ] + $tagsAssoc);
         }
 
         if (!$table->{$taggedAlias}->hasAssociation($tableAlias)) {
             $table->{$taggedAlias}
                 ->belongsTo($tableAlias, [
-                    'className' => $table->getTable(),
+                    'className' => $tableClass,
                     'foreignKey' => $tagsAssoc['foreignKey'],
                     'conditions' => $assocConditions,
                     'joinType' => 'INNER',
@@ -167,7 +214,7 @@ class TagBehavior extends Behavior
         $tagsAlias = $config['tagsAlias'];
         $taggedAlias = $config['taggedAlias'];
 
-        $taggedTable = $this->_table->{$taggedAlias};
+        $taggedTable = $this->getTable()->{$taggedAlias};
 
         if (!$taggedTable->hasBehavior('CounterCache')) {
             $taggedTable->addBehavior('CounterCache');
@@ -184,21 +231,37 @@ class TagBehavior extends Behavior
         }
 
         foreach ($config['taggedCounter'] as $field => $o) {
-            if (!$this->_table->hasField($field)) {
+            if (!$this->getTable()->hasField($field)) {
                 throw new RuntimeException(sprintf(
-                    'Field "%s" does not exist in table "%s"',
+                    'Field `%s` does not exist in table `%s`',
                     $field,
-                    $this->_table->getTable()
+                    $this->getTable()->getTable()
                 ));
             }
         }
 
         if (!$counterCache->getConfig($taggedAlias)) {
+            $field = key($config['taggedCounter']);
             $config['taggedCounter']['tag_count']['conditions'] = [
-                $taggedTable->aliasField($this->getConfig('fkTableField')) => $this->_table->getTable()
+                $taggedTable->aliasField($this->getField('tagged_model')) => $this->getIdentifier()
             ];
-            $counterCache->setConfig($this->_table->getAlias(), $config['taggedCounter']);
+            $counterCache->setConfig($this->getTable()->getAlias(), $config['taggedCounter']);
         }
+    }
+
+    /**
+     * Gets the identifier for the model
+     *
+     * @return string
+     */
+    protected function getIdentifier(): string
+    {
+        $identifier = $this->getConfig('identifier');
+        if (empty($identifier)) {
+            return $this->getTable()->getTable();
+        }
+
+        return $identifier;
     }
 
     /**
@@ -207,38 +270,45 @@ class TagBehavior extends Behavior
      * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @return array Normalized tags valid to be marshaled.
      */
-    public function normalizeTags($tags)
+    public function normalizeTags($tags): array
     {
         if (is_string($tags)) {
             $tags = explode($this->getConfig('delimiter'), $tags);
         }
 
-        $result = [];
+        if (isset($tags[0]['id'])) {
+            return [];
+        }
 
-        $common = ['_joinData' => [$this->getConfig('fkTableField') => $this->_table->getTable()]];
+        $common = ['_joinData' => [$this->getField('tagged_model') => $this->getIdentifier()]];
         if ($namespace = $this->getConfig('namespace')) {
             $common += compact('namespace');
         }
 
-        $tagsTable = $this->_table->{$this->getConfig('tagsAlias')};
+        $tagsTable = $this->getTable()->{$this->getConfig('tagsAlias')};
         $pk = $tagsTable->getPrimaryKey();
-        $df = $tagsTable->getDisplayField();
+        $displayField = $tagsTable->getDisplayField();
+        $result = [];
 
         foreach ($tags as $tag) {
             $tag = trim($tag);
             if (empty($tag)) {
                 continue;
             }
-            $tagKey = $this->_getTagKey($tag);
-            $existingTag = $this->_tagExists($tagKey);
+
+            $tagKey = $this->generateTagKey($tag);
+            $existingTag = $this->tagExists($tagKey);
+
             if (!empty($existingTag)) {
-                $result[] = $common + ['id' => $existingTag];
+                $result[] = $common + [$tagsTable->getPrimaryKey() => $existingTag];
                 continue;
             }
-            list($id, $label) = $this->_normalizeTag($tag);
-            $result[] = $common + compact(empty($id) ? $df : $pk) + [
-                'tag_key' => $tagKey
-            ];
+
+            list($id, $label) = $this->normalizeTag($tag);
+            $result[] = $common + compact(empty($id) ? $displayField : $pk) + [
+                    $this->getField('tag_keyname') => $tagKey,
+                    $this->getField('tag_name') => $tag
+                ];
         }
 
         return $result;
@@ -250,7 +320,7 @@ class TagBehavior extends Behavior
      * @param string $tag Tag label.
      * @return string
      */
-    protected function _getTagKey($tag)
+    public function generateTagKey($tag): string
     {
         return strtolower(Text::slug($tag));
     }
@@ -259,14 +329,14 @@ class TagBehavior extends Behavior
      * Checks if a tag already exists and returns the id if yes.
      *
      * @param string $tag Tag key.
-     * @return null|int
+     * @return null|string|int
      */
-    protected function _tagExists($tag)
+    public function tagExists($tag)
     {
-        $tagsTable = $this->_table->{$this->getConfig('tagsAlias')}->getTarget();
+        $tagsTable = $this->getTable()->{$this->getConfig('tagsAlias')}->getTarget();
         $result = $tagsTable->find()
             ->where([
-                $tagsTable->aliasField('tag_key') => $tag,
+                $tagsTable->aliasField($this->getField('tag_keyname')) => $tag,
             ])
             ->select([
                 $tagsTable->aliasField($tagsTable->getPrimaryKey())
@@ -274,7 +344,7 @@ class TagBehavior extends Behavior
             ->first();
 
         if (!empty($result)) {
-            return $result->id;
+            return $result->get($tagsTable->getPrimaryKey());
         }
 
         return null;
@@ -285,19 +355,20 @@ class TagBehavior extends Behavior
      * from a tag in case it exists.
      *
      * @param string $tag Tag.
-     * @return array The tag's ID and label.
+     * @return array The tag's namespace and label.
      */
-    protected function _normalizeTag($tag)
+    public function normalizeTag($tag)
     {
         $namespace = null;
         $label = $tag;
         $separator = $this->getConfig('separator');
+
         if (strpos($tag, $separator) !== false) {
             list($namespace, $label) = explode($separator, $tag);
         }
 
         return [
-            trim($namespace),
+            is_string($namespace) ? trim($namespace) : null,
             trim($label)
         ];
     }

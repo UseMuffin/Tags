@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Muffin\Tags\Model\Table;
 
 use Cake\ORM\Table;
@@ -8,7 +10,6 @@ use Cake\ORM\Table;
  */
 class TaggedTable extends Table
 {
-
     /**
      * Initialize table config.
      *

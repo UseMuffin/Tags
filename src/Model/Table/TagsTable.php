@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Muffin\Tags\Model\Table;
 
 use Cake\Core\Plugin;
@@ -9,7 +11,6 @@ use Cake\ORM\Table;
  */
 class TagsTable extends Table
 {
-
     /**
      * Initialize table config.
      *
@@ -20,6 +21,7 @@ class TagsTable extends Table
     {
         $this->setTable('tags_tags');
         $this->setDisplayField('label');
+
         $this->addBehavior('Timestamp');
         if (Plugin::loaded('Muffin/Slug')) {
             $this->addBehavior('Muffin/Slug.Slug');
