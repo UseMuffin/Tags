@@ -18,7 +18,7 @@ class TagBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $table = TableRegistry::get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
+        $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
         $table->addBehavior('Muffin/Tags.Tag');
 
         $this->Table = $table;
@@ -28,7 +28,7 @@ class TagBehaviorTest extends TestCase
     public function tearDown()
     {
         parent::tearDown();
-        TableRegistry::clear();
+        TableRegistry::getTableLocator()->clear();
         unset($this->Behavior);
     }
 
@@ -48,10 +48,10 @@ class TagBehaviorTest extends TestCase
 
     public function testDefaultInitialize()
     {
-        $belongsToMany = $this->Table->association('Tags');
+        $belongsToMany = $this->Table->getAssociation('Tags');
         $this->assertInstanceOf('Cake\ORM\Association\BelongsToMany', $belongsToMany);
 
-        $hasMany = $this->Table->association('Tagged');
+        $hasMany = $this->Table->getAssociation('Tagged');
         $this->AssertInstanceOf('Cake\ORM\Association\HasMany', $hasMany);
     }
 
@@ -63,10 +63,10 @@ class TagBehaviorTest extends TestCase
             'taggedAlias' => 'Labelled',
         ]);
 
-        $belongsToMany = $this->Table->association('Labels');
+        $belongsToMany = $this->Table->getAssociation('Labels');
         $this->assertInstanceOf('Cake\ORM\Association\BelongsToMany', $belongsToMany);
 
-        $hasMany = $this->Table->association('Labelled');
+        $hasMany = $this->Table->getAssociation('Labelled');
         $this->assertInstanceOf('Cake\ORM\Association\HasMany', $hasMany);
     }
 
@@ -141,7 +141,7 @@ class TagBehaviorTest extends TestCase
         $entity = $this->Table->newEntity($data);
 
         $this->assertEquals(2, count($entity->get('tags')));
-        $this->assertTrue($entity->dirty('tags'));
+        $this->assertTrue($entity->isDirty('tags'));
 
         $data = [
             'name' => 'Muffin',
@@ -154,7 +154,7 @@ class TagBehaviorTest extends TestCase
         $entity = $this->Table->newEntity($data);
 
         $this->assertEquals(2, count($entity->get('tags')));
-        $this->assertTrue($entity->dirty('tags'));
+        $this->assertTrue($entity->isDirty('tags'));
     }
 
     public function testMarshalingOnlyExistingTags()
@@ -167,7 +167,7 @@ class TagBehaviorTest extends TestCase
         $entity = $this->Table->newEntity($data);
 
         $this->assertEquals(2, count($entity->get('tags')));
-        $this->assertTrue($entity->dirty('tags'));
+        $this->assertTrue($entity->isDirty('tags'));
 
         $data = [
             'name' => 'Muffin',
@@ -180,7 +180,7 @@ class TagBehaviorTest extends TestCase
         $entity = $this->Table->newEntity($data);
 
         $this->assertEquals(2, count($entity->get('tags')));
-        $this->assertTrue($entity->dirty('tags'));
+        $this->assertTrue($entity->isDirty('tags'));
     }
 
     public function testMarshalingBothNewAndExistingTags()
@@ -193,7 +193,7 @@ class TagBehaviorTest extends TestCase
         $entity = $this->Table->newEntity($data);
 
         $this->assertEquals(2, count($entity->get('tags')));
-        $this->assertTrue($entity->dirty('tags'));
+        $this->assertTrue($entity->isDirty('tags'));
     }
 
     public function testMarshalingWithEmptyTagsString()
@@ -257,7 +257,7 @@ class TagBehaviorTest extends TestCase
      */
     public function testCounterCacheFieldException()
     {
-        $table = TableRegistry::get('Muffin/Tags.Buns', ['table' => 'tags_buns']);
+        $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Buns', ['table' => 'tags_buns']);
         $table->addBehavior('Muffin/Tags.Tag', [
             'taggedCounter' => [
                 'non_existent' => []

@@ -28,7 +28,7 @@ class TagAwareTraitTest extends TestCase
     {
         parent::setUp();
 
-        $table = TableRegistry::get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
+        $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
         $table->addBehavior('Muffin/Tags.Tag');
 
         $this->Table = $table;
@@ -38,7 +38,7 @@ class TagAwareTraitTest extends TestCase
     public function tearDown()
     {
         parent::tearDown();
-        TableRegistry::clear();
+        TableRegistry::getTableLocator()->clear();
         unset($this->Behavior);
     }
 
