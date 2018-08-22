@@ -8,7 +8,7 @@ class TaggedFixture extends TestFixture
     public $table = 'tags_tagged';
 
     public $fields = [
-        'id' => ['type' => 'integer'],
+        'id' => ['type' => 'integer', 'autoIncrement' => true],
         'tag_id' => ['type' => 'integer', 'null' => false],
         'fk_id' => ['type' => 'integer', 'null' => false],
         'fk_table' => ['type' => 'string', 'limit' => 255, 'null' => false],
@@ -16,6 +16,7 @@ class TaggedFixture extends TestFixture
         'modified' => ['type' => 'datetime', 'null' => true],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id']],
+            'unique_tagged' => ['type' => 'unique', 'columns' => ['tag_id', 'fk_id', 'fk_table']]
         ],
     ];
 

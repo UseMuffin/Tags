@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Muffin\Tags\Model\Table;
 
 use Cake\Core\Plugin;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 
 /**
@@ -26,5 +27,19 @@ class TagsTable extends Table
         if (Plugin::loaded('Muffin/Slug')) {
             $this->addBehavior('Muffin/Slug.Slug');
         }
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->isUnique(['tag_key'], $this);
+
+        return $rules;
     }
 }

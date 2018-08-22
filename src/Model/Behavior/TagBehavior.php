@@ -70,9 +70,9 @@ class TagBehavior extends Behavior
         // Allows you to map any of the fields we use to whatever is the
         // fieldname in your table
         'fieldMap' => [
-            'tag_name' => 'label',
+            'tag_label' => 'label',
             'tag_namespace' => 'namespace',
-            'tag_keyname' => 'tag_key',
+            'tag_key' => 'tag_key',
             'tagged_model' => 'fk_table'
         ]
     ];
@@ -169,7 +169,7 @@ class TagBehavior extends Behavior
         if (!$table->hasAssociation($tagsAlias)) {
             $table->belongsToMany($tagsAlias, $tagsAssoc + [
                     'through' => $table->{$taggedAlias}->getTarget(),
-                    'conditions' => $assocConditions
+                    'conditions' => $assocConditions,
                 ]);
         }
 
@@ -177,6 +177,7 @@ class TagBehavior extends Behavior
             $table->{$tagsAlias}
                 ->belongsToMany($tableAlias, [
                         'className' => $tableClass,
+                        'targetTable' => $table,
                     ] + $tagsAssoc);
         }
 
@@ -184,6 +185,7 @@ class TagBehavior extends Behavior
             $table->{$taggedAlias}
                 ->belongsTo($tableAlias, [
                     'className' => $tableClass,
+                    'targetTable' => $table,
                     'foreignKey' => $tagsAssoc['foreignKey'],
                     'conditions' => $assocConditions,
                     'joinType' => 'INNER',
@@ -277,7 +279,7 @@ class TagBehavior extends Behavior
         }
 
         if (isset($tags[0]['id'])) {
-            return [];
+            //return [];
         }
 
         $common = ['_joinData' => [$this->getField('tagged_model') => $this->getIdentifier()]];
@@ -306,8 +308,7 @@ class TagBehavior extends Behavior
 
             list($id, $label) = $this->normalizeTag($tag);
             $result[] = $common + compact(empty($id) ? $displayField : $pk) + [
-                    $this->getField('tag_keyname') => $tagKey,
-                    $this->getField('tag_name') => $tag
+                    $this->getField('tag_key') => $tagKey,
                 ];
         }
 
@@ -336,7 +337,7 @@ class TagBehavior extends Behavior
         $tagsTable = $this->getTable()->{$this->getConfig('tagsAlias')}->getTarget();
         $result = $tagsTable->find()
             ->where([
-                $tagsTable->aliasField($this->getField('tag_keyname')) => $tag,
+                $tagsTable->aliasField($this->getField('tag_key')) => $tag,
             ])
             ->select([
                 $tagsTable->aliasField($tagsTable->getPrimaryKey())
@@ -368,7 +369,7 @@ class TagBehavior extends Behavior
         }
 
         return [
-            is_string($namespace) ? trim($namespace) : null,
+            trim((string)$namespace),
             trim($label)
         ];
     }

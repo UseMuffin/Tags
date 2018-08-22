@@ -5,6 +5,7 @@ namespace Muffin\Tags\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 use Muffin\Tags\Model\Behavior\TagBehavior;
 
 /**
@@ -45,11 +46,14 @@ class TagBehaviorTest extends TestCase
             'name' => 'Duplicate Tags?',
             'tags' => 'Color, Dark Color'
         ]);
+
+        $Tags = $this->Table->Tags->getTarget();
         $this->Table->save($entity);
-        $Tags = $this->Table->Tags;
-        $count = $Tags->find()->where(['label' => 'Color'])->count();
+
+        $count = $Tags->find()->where(['Tags.label' => 'Color'])->count();
         $this->assertEquals(1, $count);
-        $count = $Tags->find()->where(['label' => 'Dark Color'])->count();
+
+        $count = $Tags->find()->where(['Tags.label' => 'Dark Color'])->count();
         $this->assertEquals(1, $count);
     }
 
@@ -260,7 +264,7 @@ class TagBehaviorTest extends TestCase
 
     /**
      * @expectedException \RuntimeException
-     * @expectedExceptionMessage Field "non_existent" does not exist in table "tags_buns"
+     * @expectedExceptionMessage Field `non_existent` does not exist in table `tags_buns`
      */
     public function testCounterCacheFieldException()
     {

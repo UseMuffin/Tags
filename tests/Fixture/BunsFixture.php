@@ -8,7 +8,7 @@ class BunsFixture extends TestFixture
     public $table = 'tags_buns';
 
     public $fields = [
-        'id' => ['type' => 'integer'],
+        'id' => ['type' => 'integer', 'autoIncrement' => true],
         'name' => ['type' => 'string', 'length' => 255],
         'tag_count' => ['type' => 'integer', 'null' => true, 'default' => 0],
         '_constraints' => [
