@@ -1,6 +1,8 @@
 <?php
 namespace Muffin\Tags\Model\Table;
+
 use Cake\ORM\Table;
+
 /**
  * TaggedTable
  */

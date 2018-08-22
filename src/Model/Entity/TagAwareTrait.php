@@ -38,7 +38,8 @@ trait TagAwareTrait
         $id = $this->get($table->getPrimaryKey());
         $untags = $behavior->normalizeTags($tags);
 
-        if (!$tags = $this->get($property)) {
+        $tags = $this->get($property);
+        if (!$tags) {
             $contain = [$behavior->getConfig('tagsAlias')];
             $tags = $table->get($id, compact('contain'))->get($property);
         }
@@ -46,7 +47,7 @@ trait TagAwareTrait
         $tagsTable = $table->{$behavior->getConfig('tagsAlias')};
         $pk = $tagsTable->getPrimaryKey();
         $df = $tagsTable->getDisplayField();
-        
+
         foreach ($tags as $k => $tag) {
             $tags[$k] = [
                 $pk => $tag->{$pk},
@@ -93,6 +94,7 @@ trait TagAwareTrait
         $table->patchEntity($this, [$assoc->getProperty() => $tags]);
         $result = $table->save($this);
         $assoc->setSaveStrategy($resetStrategy);
+
         return $result;
     }
 }

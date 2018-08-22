@@ -3,7 +3,6 @@ namespace Muffin\Tags\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Muffin\Tags\Model\Behavior\TagBehavior;
 
 class TagBehaviorTest extends TestCase
 {
@@ -36,7 +35,7 @@ class TagBehaviorTest extends TestCase
     {
         $entity = $this->Table->newEntity([
             'name' => 'Duplicate Tags?',
-            'tags' => 'Color, Dark Color'
+            'tags' => 'Color, Dark Color',
         ]);
         $this->Table->save($entity);
         $Tags = $this->Table->Tagged->Tags;
@@ -76,25 +75,25 @@ class TagBehaviorTest extends TestCase
         $expected = [
             0 => [
                 '_joinData' => [
-                    'fk_table' => 'tags_muffins'
+                    'fk_table' => 'tags_muffins',
                 ],
                 'label' => 'foo',
-                'tag_key' => 'foo'
+                'tag_key' => 'foo',
             ],
             1 => [
                 '_joinData' => [
-                    'fk_table' => 'tags_muffins'
+                    'fk_table' => 'tags_muffins',
                 ],
                 'id' => '3',
-                'tag_key' => '3-foobar'
+                'tag_key' => '3-foobar',
             ],
             2 => [
                 '_joinData' => [
-                    'fk_table' => 'tags_muffins'
+                    'fk_table' => 'tags_muffins',
                 ],
                 'label' => 'bar',
-                'tag_key' => 'bar'
-            ]
+                'tag_key' => 'bar',
+            ],
         ];
         $this->assertEquals($expected, $result);
 
@@ -102,18 +101,18 @@ class TagBehaviorTest extends TestCase
         $expected = [
             0 => [
                 '_joinData' => [
-                    'fk_table' => 'tags_muffins'
+                    'fk_table' => 'tags_muffins',
                 ],
                 'label' => 'foo',
-                'tag_key' => 'foo'
+                'tag_key' => 'foo',
             ],
             1 => [
                 '_joinData' => [
-                    'fk_table' => 'tags_muffins'
+                    'fk_table' => 'tags_muffins',
                 ],
                 'label' => 'bar',
-                'tag_key' => 'bar'
-            ]
+                'tag_key' => 'bar',
+            ],
         ];
 
         $this->assertEquals($expected, $result);
@@ -234,7 +233,7 @@ class TagBehaviorTest extends TestCase
         $this->Table->Tagged->removeBehavior('CounterCache');
 
         $this->Table->addBehavior('Muffin/Tags.Tag', [
-            'taggedCounter' => false
+            'taggedCounter' => false,
         ]);
 
         $count = $this->Table->get(1)->tag_count;
@@ -260,8 +259,8 @@ class TagBehaviorTest extends TestCase
         $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Buns', ['table' => 'tags_buns']);
         $table->addBehavior('Muffin/Tags.Tag', [
             'taggedCounter' => [
-                'non_existent' => []
-            ]
+                'non_existent' => [],
+            ],
         ]);
     }
 

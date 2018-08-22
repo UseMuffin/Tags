@@ -4,7 +4,6 @@ namespace Muffin\Tags\Model\Behavior;
 use ArrayObject;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
-use Cake\Utility\Inflector;
 use Cake\Utility\Text;
 use RuntimeException;
 
@@ -33,7 +32,7 @@ class TagBehavior extends Behavior
             'className' => 'Muffin/Tags.Tagged',
         ],
         'taggedCounter' => ['tag_count' => [
-            'conditions' => []
+            'conditions' => [],
         ]],
         'implementedEvents' => [
             'Model.beforeMarshal' => 'beforeMarshal',
@@ -41,7 +40,7 @@ class TagBehavior extends Behavior
         'implementedMethods' => [
             'normalizeTags' => 'normalizeTags',
         ],
-        'fkTableField' => 'fk_table'
+        'fkTableField' => 'fk_table',
     ];
 
     /**
@@ -114,10 +113,10 @@ class TagBehavior extends Behavior
         if (!$table->hasAssociation($tagsAlias)) {
             $table->belongsToMany($tagsAlias, $tagsAssoc + [
                 'through' => $table->{$taggedAlias}->getTarget(),
-                'conditions' => $assocConditions
+                'conditions' => $assocConditions,
             ]);
         }
-        
+
         if (!$table->{$tagsAlias}->hasAssociation($tableAlias)) {
             $table->{$tagsAlias}
                 ->belongsToMany($tableAlias, [
@@ -188,7 +187,7 @@ class TagBehavior extends Behavior
         if (!$counterCache->getConfig($taggedAlias)) {
             $field = key($config['taggedCounter']);
             $config['taggedCounter']['tag_count']['conditions'] = [
-                $taggedTable->aliasField($this->getConfig('fkTableField')) => $this->_table->getTable()
+                $taggedTable->aliasField($this->getConfig('fkTableField')) => $this->_table->getTable(),
             ];
             $counterCache->setConfig($this->_table->getAlias(), $config['taggedCounter']);
         }
@@ -209,7 +208,8 @@ class TagBehavior extends Behavior
         $result = [];
 
         $common = ['_joinData' => [$this->getConfig('fkTableField') => $this->_table->getTable()]];
-        if ($namespace = $this->getConfig('namespace')) {
+        $namespace = $this->getConfig('namespace');
+        if ($namespace) {
             $common += compact('namespace');
         }
 
@@ -230,7 +230,7 @@ class TagBehavior extends Behavior
             }
             list($id, $label) = $this->_normalizeTag($tag);
             $result[] = $common + compact(empty($id) ? $df : $pk) + [
-                'tag_key' => $tagKey
+                'tag_key' => $tagKey,
             ];
         }
 
@@ -245,7 +245,7 @@ class TagBehavior extends Behavior
      */
     protected function _getTagKey($tag)
     {
-       return strtolower(Text::slug($tag));
+        return strtolower(Text::slug($tag));
     }
 
     /**
@@ -262,12 +262,13 @@ class TagBehavior extends Behavior
                 $tagsTable->aliasField('tag_key') => $tag,
             ])
             ->select([
-                $tagsTable->aliasField($tagsTable->getPrimaryKey())
+                $tagsTable->aliasField($tagsTable->getPrimaryKey()),
             ])
             ->first();
         if (!empty($result)) {
             return $result->id;
         }
+
         return null;
     }
 
@@ -289,7 +290,7 @@ class TagBehavior extends Behavior
 
         return [
             trim($namespace),
-            trim($label)
+            trim($label),
         ];
     }
 }
