@@ -278,10 +278,6 @@ class TagBehavior extends Behavior
             $tags = explode($this->getConfig('delimiter'), $tags);
         }
 
-        if (isset($tags[0]['id'])) {
-            //return [];
-        }
-
         $common = ['_joinData' => [$this->getField('tagged_model') => $this->getIdentifier()]];
         if ($namespace = $this->getConfig('namespace')) {
             $common += compact('namespace');
@@ -309,6 +305,7 @@ class TagBehavior extends Behavior
             list($id, $label) = $this->normalizeTag($tag);
             $result[] = $common + compact(empty($id) ? $displayField : $pk) + [
                     $this->getField('tag_key') => $tagKey,
+                    $this->getField('tag_label') => $label,
                 ];
         }
 
