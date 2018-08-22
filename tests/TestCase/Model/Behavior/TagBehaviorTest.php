@@ -203,7 +203,7 @@ class TagBehaviorTest extends TestCase
         ];
 
         $entity = $this->Table->newEntity($data);
-        $this->assertEquals(0, count($entity->get('tags')));
+        $this->assertNull($entity->get('tags'));
     }
 
     public function testSaveIncrementsCounter()
