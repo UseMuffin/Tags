@@ -7,10 +7,15 @@ use Cake\ORM\Behavior;
 use Cake\Utility\Text;
 use RuntimeException;
 
+/**
+ * Tag Behavior
+ */
 class TagBehavior extends Behavior
 {
     /**
-     * Configuration.
+     * Configuration Options
+     * - delimiter: The delimiter used to explode() the tags. Default is comma.
+     * - separator: Namespace separator, by default semicolon.
      *
      * @var array
      */
@@ -31,9 +36,9 @@ class TagBehavior extends Behavior
         'taggedAssoc' => [
             'className' => 'Muffin/Tags.Tagged',
         ],
-        'taggedCounter' => ['tag_count' => [
-            'conditions' => [],
-        ]],
+        'taggedCounter' => [
+            'tag_count' => ['conditions' => []],
+        ],
         'implementedEvents' => [
             'Model.beforeMarshal' => 'beforeMarshal',
         ],
