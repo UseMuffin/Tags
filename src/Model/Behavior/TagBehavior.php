@@ -48,7 +48,7 @@ class TagBehavior extends Behavior
         // Tagged table setup
         'taggedAlias' => 'Tagged',
         'taggedAssoc' => [
-            'className' => 'Tagged',
+            'className' => 'Muffin/Tags.Tagged',
         ],
         // Tags counter setup
         'taggedCounter' => ['tag_count' => [
