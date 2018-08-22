@@ -4,7 +4,7 @@ namespace Muffin\Tags\Model\Behavior;
 use ArrayObject;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
-use Cake\Utility\Inflector;
+use Cake\Utility\Text;
 use RuntimeException;
 
 class TagBehavior extends Behavior
@@ -244,7 +244,7 @@ class TagBehavior extends Behavior
      */
     protected function _getTagKey($tag)
     {
-        return strtolower(Inflector::slug($tag));
+        return strtolower(Text::slug($tag));
     }
 
     /**
