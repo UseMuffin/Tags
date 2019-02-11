@@ -12,18 +12,16 @@ This plugin allows you to simply tag record in your database with multiple tags.
 Using [Composer][composer]:
 
 ```
-composer require muffin/tags:dev-master
+composer require muffin/tags
 ```
 
-You then need to load the plugin. In `boostrap.php`, something like:
+You then need to load the plugin. You can use the shell command:
 
 ```php
-\Cake\Core\Plugin::load('Muffin/Tags');
+bin/cake plugin load Muffin/Tags
 ```
 
 ## Usage
-
-{{@TODO documentation}}
 
 ## Quick Start Guide
 
