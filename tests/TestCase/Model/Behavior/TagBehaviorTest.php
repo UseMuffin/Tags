@@ -255,7 +255,7 @@ class TagBehaviorTest extends TestCase
     public function testCounterCacheFieldException(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectedExceptionMessage('Field "non_existent" does not exist in table "tags_buns"');
+        $this->expectExceptionMessage('Field "non_existent" does not exist in table "tags_buns"');
         $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Buns', ['table' => 'tags_buns']);
         $table->addBehavior('Muffin/Tags.Tag', [
             'taggedCounter' => [
