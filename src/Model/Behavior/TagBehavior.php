@@ -288,7 +288,7 @@ class TagBehavior extends Behavior
      */
     protected function _normalizeTag(string $tag)
     {
-        $namespace = null;
+        $namespace = '';
         $label = $tag;
         $separator = $this->getConfig('separator');
         if (strpos($tag, $separator) !== false) {
