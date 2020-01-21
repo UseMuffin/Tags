@@ -6,7 +6,7 @@ namespace Muffin\Tags;
 use Cake\Core\BasePlugin;
 
 /**
- * Plugin class for tokenize
+ * Plugin class for tags
  */
 class Plugin extends BasePlugin
 {
