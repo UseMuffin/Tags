@@ -14,7 +14,7 @@ class TagAwareTraitTest extends TestCase
         'plugin.Muffin/Tags.Tags',
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -25,14 +25,14 @@ class TagAwareTraitTest extends TestCase
         $this->Behavior = $table->behaviors()->Tag;
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         TableRegistry::getTableLocator()->clear();
         unset($this->Behavior);
     }
 
-    public function testTag()
+    public function testTag(): void
     {
         $count = $this->Table->get(1)->tag_count;
 
@@ -41,7 +41,7 @@ class TagAwareTraitTest extends TestCase
         $this->assertEquals($count + 1, $this->Table->get(1)->tag_count);
     }
 
-    public function testUntag()
+    public function testUntag(): void
     {
         $entity = new TagsMuffin(['id' => 1]);
         $entity->untag('Color');

@@ -295,6 +295,7 @@ class TagBehavior extends Behavior
             [$namespace, $label] = explode($separator, $tag);
         }
 
+        /** @psalm-suppress PossiblyNullArgument **/
         return [
             trim($namespace),
             trim($label),

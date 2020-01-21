@@ -15,7 +15,7 @@ class TagBehaviorTest extends TestCase
         'plugin.Muffin/Tags.Tags',
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -26,14 +26,14 @@ class TagBehaviorTest extends TestCase
         $this->Behavior = $table->behaviors()->Tag;
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         TableRegistry::getTableLocator()->clear();
         unset($this->Behavior);
     }
 
-    public function testSavingDuplicates()
+    public function testSavingDuplicates(): void
     {
         $entity = $this->Table->newEntity([
             'name' => 'Duplicate Tags?',
@@ -47,7 +47,7 @@ class TagBehaviorTest extends TestCase
         $this->assertEquals(1, $count);
     }
 
-    public function testDefaultInitialize()
+    public function testDefaultInitialize(): void
     {
         $belongsToMany = $this->Table->getAssociation('Tags');
         $this->assertInstanceOf('Cake\ORM\Association\BelongsToMany', $belongsToMany);
@@ -56,7 +56,7 @@ class TagBehaviorTest extends TestCase
         $this->AssertInstanceOf('Cake\ORM\Association\HasMany', $hasMany);
     }
 
-    public function testCustomInitialize()
+    public function testCustomInitialize(): void
     {
         $this->Table->removeBehavior('Tag');
         $this->Table->addBehavior('Muffin/Tags.Tag', [
@@ -71,7 +71,7 @@ class TagBehaviorTest extends TestCase
         $this->assertInstanceOf('Cake\ORM\Association\HasMany', $hasMany);
     }
 
-    public function testNormalizeTags()
+    public function testNormalizeTags(): void
     {
         $result = $this->Behavior->normalizeTags('foo, 3:foobar, bar');
         $expected = [
@@ -132,7 +132,7 @@ class TagBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testMarshalingOnlyNewTags()
+    public function testMarshalingOnlyNewTags(): void
     {
         $data = [
             'name' => 'Muffin',
@@ -158,7 +158,7 @@ class TagBehaviorTest extends TestCase
         $this->assertTrue($entity->isDirty('tags'));
     }
 
-    public function testMarshalingOnlyExistingTags()
+    public function testMarshalingOnlyExistingTags(): void
     {
         $data = [
             'name' => 'Muffin',
@@ -184,7 +184,7 @@ class TagBehaviorTest extends TestCase
         $this->assertTrue($entity->isDirty('tags'));
     }
 
-    public function testMarshalingBothNewAndExistingTags()
+    public function testMarshalingBothNewAndExistingTags(): void
     {
         $data = [
             'name' => 'Muffin',
@@ -197,7 +197,7 @@ class TagBehaviorTest extends TestCase
         $this->assertTrue($entity->isDirty('tags'));
     }
 
-    public function testMarshalingWithEmptyTagsString()
+    public function testMarshalingWithEmptyTagsString(): void
     {
         $data = [
             'name' => 'Muffin',
@@ -208,7 +208,7 @@ class TagBehaviorTest extends TestCase
         $this->assertNull($entity->get('tags'));
     }
 
-    public function testSaveIncrementsCounter()
+    public function testSaveIncrementsCounter(): void
     {
         $data = [
             'name' => 'Muffin',
@@ -229,7 +229,7 @@ class TagBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testCounterCacheDisabled()
+    public function testCounterCacheDisabled(): void
     {
         $this->Table->removeBehavior('Tag');
         $this->Table->Tagged->removeBehavior('CounterCache');
@@ -256,7 +256,7 @@ class TagBehaviorTest extends TestCase
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Field "non_existent" does not exist in table "tags_buns"
      */
-    public function testCounterCacheFieldException()
+    public function testCounterCacheFieldException(): void
     {
         $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Buns', ['table' => 'tags_buns']);
         $table->addBehavior('Muffin/Tags.Tag', [
@@ -266,7 +266,7 @@ class TagBehaviorTest extends TestCase
         ]);
     }
 
-    public function testAssociationConditionsAreWorkingAsExpected()
+    public function testAssociationConditionsAreWorkingAsExpected(): void
     {
         $this->assertEquals(2, count($this->Table->get(1, ['contain' => ['Tags']])->tags));
     }
