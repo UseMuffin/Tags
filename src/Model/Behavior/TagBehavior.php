@@ -286,7 +286,7 @@ class TagBehavior extends Behavior
      * @param string $tag Tag.
      * @return array The tag's ID and label.
      */
-    protected function _normalizeTag($tag)
+    protected function _normalizeTag(string $tag)
     {
         $namespace = null;
         $label = $tag;
