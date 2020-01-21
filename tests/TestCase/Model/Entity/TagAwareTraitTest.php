@@ -5,6 +5,7 @@ namespace Muffin\Tags\Test\TestCase\Model\Entity;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Muffin\Tags\Test\App\Model\Entity\TagsMuffin;
 
 class TagAwareTraitTest extends TestCase
 {
