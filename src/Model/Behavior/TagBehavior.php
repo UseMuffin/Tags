@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Muffin\Tags\Model\Behavior;
 
 use ArrayObject;
@@ -54,7 +56,7 @@ class TagBehavior extends Behavior
      * @param array $config Configuration array.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $this->bindAssociations();
         $this->attachCounters();
@@ -65,7 +67,7 @@ class TagBehavior extends Behavior
      *
      * @return array Events list.
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return $this->getConfig('implementedEvents');
     }
@@ -233,7 +235,7 @@ class TagBehavior extends Behavior
                 $result[] = $common + ['id' => $existingTag];
                 continue;
             }
-            list($id, $label) = $this->_normalizeTag($tag);
+            [$id, $label] = $this->_normalizeTag($tag);
             $result[] = $common + compact(empty($id) ? $df : $pk) + [
                 'tag_key' => $tagKey,
             ];
@@ -290,7 +292,7 @@ class TagBehavior extends Behavior
         $label = $tag;
         $separator = $this->getConfig('separator');
         if (strpos($tag, $separator) !== false) {
-            list($namespace, $label) = explode($separator, $tag);
+            [$namespace, $label] = explode($separator, $tag);
         }
 
         return [

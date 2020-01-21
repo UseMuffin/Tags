@@ -1,20 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace Muffin\Tags\Test\TestCase\Model\Entity;
 
-use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Muffin\Tags\Model\Entity\TagAwareTrait;
-
-class TagsMuffin extends Entity
-{
-    use TagAwareTrait;
-
-    public function source($source = null)
-    {
-        return 'Muffin/Tags.Muffins';
-    }
-}
 
 class TagAwareTraitTest extends TestCase
 {
