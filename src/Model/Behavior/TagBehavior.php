@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Muffin\Tags\Model\Behavior;
 
 use ArrayObject;
-use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
 use Cake\Utility\Text;
