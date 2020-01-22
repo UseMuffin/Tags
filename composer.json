@@ -30,7 +30,8 @@
         "source": "https://github.com/usemuffin/tags"
     },
     "require": {
-        "cakephp/orm": "^4.0"
+        "cakephp/orm": "^4.0",
+        "cakephp/utility": "^4.0"
     },
     "require-dev": {
         "cakephp/cakephp": "^4.0",
