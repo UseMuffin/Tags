@@ -1,6 +1,6 @@
 {
     "name": "muffin/tags",
-    "description": "Tags plugin for CakePHP 3.x",
+    "description": "Tags plugin for CakePHP",
     "type": "cakephp-plugin",
     "keywords": [
         "cakephp",
@@ -30,15 +30,12 @@
         "source": "https://github.com/usemuffin/tags"
     },
     "require": {
-        "cakephp/orm": "^4.0",
-        "cakephp/migrations": "^3.0"
+        "cakephp/orm": "^4.0"
     },
     "require-dev": {
         "cakephp/cakephp": "^4.0",
         "cakephp/cakephp-codesniffer": "^4.0",
-        "phpstan/phpstan": "^0.12",
-        "phpunit/phpunit": "~8.5.0",
-        "psalm/phar": "^3.7"
+        "phpunit/phpunit": "~8.5.0"
     },
     "suggest": {
         "muffin/slug": "For adding slugs to tags"
@@ -54,9 +51,7 @@
             "Muffin\\Tags\\Test\\App\\": "tests/test_app/src"
         }
     },
-    "prefer-stable": true,
     "config": {
         "sort-packages": true
-    },
-    "minimum-stability": "dev"
+    }
 }
