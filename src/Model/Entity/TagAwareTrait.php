@@ -14,7 +14,7 @@ trait TagAwareTrait
      * @param bool $merge Whether to merge or replace tags. Default true.
      * @return bool|\Cake\ORM\Entity False on failure, entity on success.
      */
-    public function tag($tags, $merge = true)
+    public function tag($tags, bool $merge = true)
     {
         return $this->_updateTags($tags, $merge ? 'append' : 'replace');
     }
@@ -22,7 +22,7 @@ trait TagAwareTrait
     /**
      * Untag entity from given tags.
      *
-     * @param string|array $tags List of tags as an array or a delimited string (comma by default).
+     * @param string|array|null $tags List of tags as an array or a delimited string (comma by default).
      *   If no value is passed all tags will be removed.
      * @return bool|\Cake\ORM\Entity False on failure, entity on success.
      */
@@ -86,7 +86,7 @@ trait TagAwareTrait
      *   Valid values 'append', 'replace'.
      * @return bool|\Cake\ORM\Entity False on failure, entity on success.
      */
-    protected function _updateTags($tags, $saveStrategy)
+    protected function _updateTags($tags, string $saveStrategy)
     {
         $table = TableRegistry::getTableLocator()->get($this->source());
         $behavior = $table->behaviors()->Tag;

@@ -5,6 +5,7 @@ namespace Muffin\Tags\Model\Behavior;
 
 use ArrayObject;
 use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
 use Cake\Utility\Text;
 use RuntimeException;
@@ -75,12 +76,12 @@ class TagBehavior extends Behavior
     /**
      * Before marshal callaback
      *
-     * @param \Cake\Event\Event $event The Model.beforeMarshal event.
+     * @param \Cake\Event\EventInterface $event The Model.beforeMarshal event.
      * @param \ArrayObject $data Data.
      * @param \ArrayObject $options Options.
      * @return void
      */
-    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options)
     {
         $field = $this->getConfig('tagsAssoc.propertyName');
         if (!empty($data[$field]) && (!is_array($data[$field]) || !array_key_exists('_ids', $data[$field]))) {
@@ -97,7 +98,7 @@ class TagBehavior extends Behavior
      *
      * @return void
      */
-    public function bindAssociations()
+    public function bindAssociations(): void
     {
         $config = $this->getConfig();
         $tagsAlias = $config['tagsAlias'];
@@ -159,7 +160,7 @@ class TagBehavior extends Behavior
      * @return void
      * @throws \RuntimeException If configured counter cache field does not exist in table.
      */
-    public function attachCounters()
+    public function attachCounters(): void
     {
         $config = $this->getConfig();
         $tagsAlias = $config['tagsAlias'];
@@ -206,7 +207,7 @@ class TagBehavior extends Behavior
      * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @return array Normalized tags valid to be marshaled.
      */
-    public function normalizeTags($tags)
+    public function normalizeTags($tags): array
     {
         if (is_string($tags)) {
             $tags = explode($this->getConfig('delimiter'), $tags);
@@ -250,7 +251,7 @@ class TagBehavior extends Behavior
      * @param string $tag Tag label.
      * @return string
      */
-    protected function _getTagKey($tag)
+    protected function _getTagKey(string $tag): string
     {
         return strtolower(Text::slug($tag));
     }
@@ -261,7 +262,7 @@ class TagBehavior extends Behavior
      * @param string $tag Tag key.
      * @return null|int
      */
-    protected function _tagExists($tag)
+    protected function _tagExists(string $tag): ?int
     {
         $tagsTable = $this->_table->{$this->getConfig('tagsAlias')}->getTarget();
         $result = $tagsTable->find()
@@ -286,7 +287,7 @@ class TagBehavior extends Behavior
      * @param string $tag Tag.
      * @return array The tag's ID and label.
      */
-    protected function _normalizeTag(string $tag)
+    protected function _normalizeTag(string $tag): array
     {
         $namespace = '';
         $label = $tag;
