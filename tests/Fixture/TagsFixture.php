@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Muffin\Tags\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
@@ -38,7 +40,7 @@ class TagsFixture extends TestFixture
         ],
     ];
 
-    public function init()
+    public function init(): void
     {
         $created = $modified = date('Y-m-d H:i:s');
         array_walk($this->records, function (&$record) use ($created, $modified) {

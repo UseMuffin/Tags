@@ -1,48 +1,62 @@
 {
-	"name" : "muffin/tags",
-	"description" : "Tags plugin for CakePHP 3.x",
-	"type" : "cakephp-plugin",
-	"keywords" : [
-		"cakephp",
-		"muffin",
-		"tags"
-	],
-	"homepage" : "https://github.com/usemuffin/tags",
-	"license" : "MIT",
-	"authors" : [{
-			"name" : "Jad Bitar",
-			"homepage" : "http://jadb.io",
-			"role" : "Author"
-		}, {
-			"name" : "ADmad",
-			"homepage" : "https://github.com/ADmad",
-			"role" : "Author"
-		}, {
-			"name" : "Others",
-			"homepage" : "https://github.com/usemuffin/tags/graphs/contributors"
-		}
-	],
-	"support" : {
-		"issues" : "https://github.com/usemuffin/tags/issues",
-		"source" : "https://github.com/usemuffin/tags"
-	},
-	"require" : {
-		"cakephp/orm" : "^3.5",
-		"cakephp/migrations" : "^2.0"
-	},
-	"require-dev" : {
-		"cakephp/cakephp" : "^3.5",
-		"phpunit/phpunit" : "^5.7.14|^6.0",
-		"muffin/slug" : "^1.4"
-	},
-	"autoload" : {
-		"psr-4" : {
-			"Muffin\\Tags\\" : "src"
-		}
-	},
-	"autoload-dev" : {
-		"psr-4" : {
-			"Muffin\\Tags\\Test\\" : "tests"
-		}
-	}
+    "name": "muffin/tags",
+    "description": "Tags plugin for CakePHP 3.x",
+    "type": "cakephp-plugin",
+    "keywords": [
+        "cakephp",
+        "muffin",
+        "tags"
+    ],
+    "homepage": "https://github.com/usemuffin/tags",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jad Bitar",
+            "homepage": "http://jadb.io",
+            "role": "Author"
+        },
+        {
+            "name": "ADmad",
+            "homepage": "https://github.com/ADmad",
+            "role": "Author"
+        },
+        {
+            "name": "Others",
+            "homepage": "https://github.com/usemuffin/tags/graphs/contributors"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/usemuffin/tags/issues",
+        "source": "https://github.com/usemuffin/tags"
+    },
+    "require": {
+        "cakephp/orm": "^4.0",
+        "cakephp/migrations": "^3.0"
+    },
+    "require-dev": {
+        "cakephp/cakephp": "^4.0",
+        "cakephp/cakephp-codesniffer": "^4.0",
+        "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": "~8.5.0",
+        "psalm/phar": "^3.7"
+    },
+    "suggest": {
+        "muffin/slug": "For adding slugs to tags"
+    },
+    "autoload": {
+        "psr-4": {
+            "Muffin\\Tags\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Muffin\\Tags\\Test\\": "tests",
+            "Muffin\\Tags\\Test\\App\\": "tests/test_app/src"
+        }
+    },
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev"
 }

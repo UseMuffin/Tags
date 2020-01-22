@@ -6,7 +6,7 @@
     >
 
     <testsuites>
-        <testsuite name="Tags Test Cases">
+        <testsuite name="Muffin/Tags Test Cases">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
@@ -25,6 +25,7 @@
     <filter>
         <whitelist>
             <directory suffix=".php">./src/</directory>
+            <directory suffix=".ctp">./src/</directory>
         </whitelist>
     </filter>
 </phpunit>
