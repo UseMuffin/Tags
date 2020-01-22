@@ -4,7 +4,7 @@ Tags loves to welcome your contributions. There are several ways to help out:
 * Create a ticket in GitHub, if you have found a bug
 * Write testcases for open bug tickets
 * Write patches for open bug/feature tickets, preferably with testcases included
-* Contribute to the [documentation](https://github.com/UseMuffin/Tags/tree/gh-pages)
+* Contribute to the documentation/readme
 
 There are a few guidelines that we need contributors to follow so that we have a
 chance of keeping on top of things.
@@ -58,21 +58,6 @@ To run the sniffs for CakePHP coding standards
 Check the [cakephp-codesniffer](https://github.com/cakephp/cakephp-codesniffer)
 repository to setup the CakePHP standard. The README contains installation info
 for the sniff and phpcs.
-
-## Documentation
-
-You can build the documentation using Docker via the following commands:
-
-    # go to the docs dir
-    cd docs
-
-    # build the docs
-    docker build .
-
-    # make the html
-    docker run -it --rm -v $(pwd)/docs:/data UseMuffin/Tags make html
-
-    # open the generated html docs in docs/_build/html
 
 # Additional Resources
 
