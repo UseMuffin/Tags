@@ -18,7 +18,7 @@ class TagsTable extends Table
         $this->setTable('tags_tags');
         $this->setDisplayField('label');
         $this->addBehavior('Timestamp');
-        if (Plugin::loaded('Muffin/Slug')) {
+        if (Plugin::isLoaded('Muffin/Slug')) {
             $this->addBehavior('Muffin/Slug.Slug');
         }
     }
