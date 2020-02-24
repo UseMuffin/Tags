@@ -57,7 +57,8 @@ trait TagAwareTrait
 
         foreach ($untags as $untag) {
             foreach ($tags as $k => $tag) {
-                if ((empty($untag[$pk]) || $tag[$pk] === $untag[$pk]) &&
+                if (
+                    (empty($untag[$pk]) || $tag[$pk] === $untag[$pk]) &&
                     (empty($untag[$df]) || $tag[$df] === $untag[$df])
                 ) {
                     unset($tags[$k]);
