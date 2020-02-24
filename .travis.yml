@@ -6,6 +6,10 @@ php:
   - 7.1
   - 7.2
 
+services:
+  - mysql
+  - postgresql
+
 env:
   matrix:
     - DB=mysql db_dsn='mysql://root@127.0.0.1/cakephp_test'
@@ -37,7 +41,7 @@ before_script:
   - if [[ $DB = 'mysql' ]]; then mysql -e 'CREATE DATABASE cakephp_test;'; fi
   - if [[ $DB = 'pgsql' ]]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi
 
-  - if [[ $PHPCS = 1 ]]; then composer require cakephp/cakephp-codesniffer; fi
+  - if [[ $PHPCS = 1 ]]; then composer require cakephp/cakephp-codesniffer:^3.0; fi
   - if [[ $PHPSTAN = 1 ]]; then composer require phpstan/phpstan; fi
 
 script:
