@@ -65,7 +65,7 @@ class TagBehavior extends Behavior
     /**
      * Return lists of event's this behavior is interested in.
      *
-     * @return array Events list.
+     * @return array<string, mixed> Events list.
      */
     public function implementedEvents(): array
     {
@@ -192,7 +192,6 @@ class TagBehavior extends Behavior
         }
 
         if (!$counterCache->getConfig($taggedAlias)) {
-            $field = key($config['taggedCounter']);
             $config['taggedCounter']['tag_count']['conditions'] = [
                 $taggedTable->aliasField($this->getConfig('fkTableField')) => $this->_table->getTable(),
             ];
@@ -235,7 +234,9 @@ class TagBehavior extends Behavior
                 $result[] = $common + ['id' => $existingTag];
                 continue;
             }
+            // phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
             [$id, $label] = $this->_normalizeTag($tag);
+            // phpcs:enable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
             $result[] = $common + compact(empty($id) ? $df : $pk) + [
                 'tag_key' => $tagKey,
             ];
@@ -259,7 +260,7 @@ class TagBehavior extends Behavior
      * Checks if a tag already exists and returns the id if yes.
      *
      * @param string $tag Tag key.
-     * @return null|int
+     * @return int|null
      */
     protected function _tagExists(string $tag): ?int
     {
@@ -292,6 +293,7 @@ class TagBehavior extends Behavior
         $label = $tag;
         $separator = $this->getConfig('separator');
         if (str_contains($tag, $separator)) {
+            /** @psalm-suppress ArgumentTypeCoercion */
             [$namespace, $label] = explode($separator, $tag);
         }
 

@@ -13,7 +13,7 @@ trait TagAwareTrait
      *
      * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @param bool $merge Whether to merge or replace tags. Default true.
-     * @return bool|\Cake\ORM\Entity False on failure, entity on success.
+     * @return \Cake\ORM\Entity|bool False on failure, entity on success.
      */
     public function tag(array|string $tags, bool $merge = true): Entity|bool
     {
@@ -25,7 +25,7 @@ trait TagAwareTrait
      *
      * @param array|string|null $tags List of tags as an array or a delimited string (comma by default).
      *   If no value is passed all tags will be removed.
-     * @return bool|\Cake\ORM\Entity False on failure, entity on success.
+     * @return \Cake\ORM\Entity|bool False on failure, entity on success.
      */
     public function untag(array|string|null $tags = null): Entity|bool
     {
@@ -86,7 +86,7 @@ trait TagAwareTrait
      * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @param string $saveStrategy Whether to merge or replace tags.
      *   Valid values 'append', 'replace'.
-     * @return bool|\Cake\ORM\Entity False on failure, entity on success.
+     * @return \Cake\ORM\Entity|bool False on failure, entity on success.
      */
     protected function _updateTags(array|string $tags, string $saveStrategy): Entity|bool
     {
