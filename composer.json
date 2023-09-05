@@ -30,14 +30,17 @@
         "source": "https://github.com/usemuffin/tags"
     },
     "require": {
-        "cakephp/orm": "^4.0",
-        "cakephp/utility": "^4.0"
+        "cakephp/orm": "5.x-dev",
+        "cakephp/utility": "5.x-dev"
     },
     "require-dev": {
-        "cakephp/cakephp": "^4.0",
-        "cakephp/cakephp-codesniffer": "^4.0",
-        "phpunit/phpunit": "~8.5.0"
+        "cakephp/cakephp": "5.x-dev",
+        "cakephp/migrations": "4.x-dev",
+        "cakephp/cakephp-codesniffer": "^5.0",
+        "phpunit/phpunit": "^10.1.0"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "suggest": {
         "muffin/slug": "For adding slugs to tags"
     },
@@ -53,6 +56,23 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "cs-check": "phpcs --colors --parallel=16 -p src/ tests/",
+        "cs-fix": "phpcbf --colors --parallel=16 -p src/ tests/",
+        "phpstan": "tools/phpstan analyse",
+        "psalm": "tools/psalm --show-info=false",
+        "stan": [
+            "@phpstan",
+            "@psalm"
+        ],
+        "stan-baseline": "tools/phpstan --generate-baseline",
+        "psalm-baseline": "tools/psalm  --set-baseline=psalm-baseline.xml",
+        "stan-setup": "phive install",
+        "test": "phpunit"
     }
 }

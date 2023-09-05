@@ -19,9 +19,9 @@ class TagBehavior extends Behavior
      * - delimiter: The delimiter used to explode() the tags. Default is comma.
      * - separator: Namespace separator, by default semicolon.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'delimiter' => ',',
         'separator' => ':',
         'namespace' => null,
@@ -80,7 +80,7 @@ class TagBehavior extends Behavior
      * @param \ArrayObject $options Options.
      * @return void
      */
-    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options)
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         $field = $this->getConfig('tagsAssoc.propertyName');
         if (!empty($data[$field]) && (!is_array($data[$field]) || !array_key_exists('_ids', $data[$field]))) {
@@ -206,7 +206,7 @@ class TagBehavior extends Behavior
      * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @return array Normalized tags valid to be marshaled.
      */
-    public function normalizeTags($tags): array
+    public function normalizeTags(array|string $tags): array
     {
         if (is_string($tags)) {
             $tags = explode($this->getConfig('delimiter'), $tags);
@@ -291,7 +291,7 @@ class TagBehavior extends Behavior
         $namespace = '';
         $label = $tag;
         $separator = $this->getConfig('separator');
-        if (strpos($tag, $separator) !== false) {
+        if (str_contains($tag, $separator)) {
             [$namespace, $label] = explode($separator, $tag);
         }
 

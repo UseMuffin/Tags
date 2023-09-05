@@ -8,33 +8,33 @@ use Cake\Core\BasePlugin;
 /**
  * Plugin class for tags
  */
-class Plugin extends BasePlugin
+class TagsPlugin extends BasePlugin
 {
     /**
      * Plugin name.
      *
-     * @var string
+     * @var string|null
      */
-    protected $name = 'Tags';
+    protected ?string $name = 'Tags';
 
     /**
      * Do bootstrapping or not
      *
      * @var bool
      */
-    protected $bootstrapEnabled = false;
+    protected bool $bootstrapEnabled = false;
 
     /**
      * Load routes or not
      *
      * @var bool
      */
-    protected $routesEnabled = false;
+    protected bool $routesEnabled = false;
 
     /**
      * Console middleware
      *
      * @var bool
      */
-    protected $consoleEnabled = false;
+    protected bool $consoleEnabled = false;
 }
