@@ -17,8 +17,14 @@ composer require muffin/tags
 
 You then need to load the plugin. You can use the shell command:
 
-```php
+```
 bin/cake plugin load Muffin/Tags
+```
+
+or by manually adding the following line to `src/Application.php`:
+
+```php
+$this->addPlugin('Muffin/Obfuscate');
 ```
 
 ## Usage
@@ -63,7 +69,7 @@ http://github.com/usemuffin/tags/issues
 
 ## License
 
-Copyright (c) 2015, [Use Muffin] and licensed under [The MIT License][mit].
+Copyright (c) 2015-Present, [Use Muffin] and licensed under [The MIT License][mit].
 
 [cakephp]:http://cakephp.org
 [composer]:http://getcomposer.org

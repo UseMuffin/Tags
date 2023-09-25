@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Test suite bootstrap.
  *
@@ -6,7 +8,6 @@
  * has been installed as a dependency of the plugin, or the plugin is itself
  * installed as a dependency of an application.
  */
-
 $findRoot = function ($root) {
     do {
         $lastRoot = $root;
@@ -18,15 +19,9 @@ $findRoot = function ($root) {
 
     throw new Exception("Cannot find the root of the application, unable to run tests");
 };
-
 $root = $findRoot(__FILE__);
 unset($findRoot);
 
 chdir($root);
-if (file_exists($root . '/config/bootstrap.php')) {
-    require $root . '/config/bootstrap.php';
-
-    return;
-}
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
