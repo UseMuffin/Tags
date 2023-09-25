@@ -24,7 +24,7 @@ bin/cake plugin load Muffin/Tags
 or by manually adding the following line to `src/Application.php`:
 
 ```php
-$this->addPlugin('Muffin/Obfuscate');
+$this->addPlugin('Muffin/Tags');
 ```
 
 ## Usage

@@ -19,9 +19,9 @@ class TagBehavior extends Behavior
      * - delimiter: The delimiter used to explode() the tags. Default is comma.
      * - separator: Namespace separator, by default semicolon.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'delimiter' => ',',
         'separator' => ':',
         'namespace' => null,
@@ -65,7 +65,7 @@ class TagBehavior extends Behavior
     /**
      * Return lists of event's this behavior is interested in.
      *
-     * @return array Events list.
+     * @return array<string, mixed> Events list.
      */
     public function implementedEvents(): array
     {
@@ -80,7 +80,7 @@ class TagBehavior extends Behavior
      * @param \ArrayObject $options Options.
      * @return void
      */
-    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options)
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         $field = $this->getConfig('tagsAssoc.propertyName');
         if (!empty($data[$field]) && (!is_array($data[$field]) || !array_key_exists('_ids', $data[$field]))) {
@@ -192,7 +192,6 @@ class TagBehavior extends Behavior
         }
 
         if (!$counterCache->getConfig($taggedAlias)) {
-            $field = key($config['taggedCounter']);
             $config['taggedCounter']['tag_count']['conditions'] = [
                 $taggedTable->aliasField($this->getConfig('fkTableField')) => $this->_table->getTable(),
             ];
@@ -206,7 +205,7 @@ class TagBehavior extends Behavior
      * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @return array Normalized tags valid to be marshaled.
      */
-    public function normalizeTags($tags): array
+    public function normalizeTags(array|string $tags): array
     {
         if (is_string($tags)) {
             $tags = explode($this->getConfig('delimiter'), $tags);
@@ -237,6 +236,7 @@ class TagBehavior extends Behavior
             }
             [$id, $label] = $this->_normalizeTag($tag);
             $result[] = $common + compact(empty($id) ? $df : $pk) + [
+                'label' => $label,
                 'tag_key' => $tagKey,
             ];
         }
@@ -259,7 +259,7 @@ class TagBehavior extends Behavior
      * Checks if a tag already exists and returns the id if yes.
      *
      * @param string $tag Tag key.
-     * @return null|int
+     * @return int|null
      */
     protected function _tagExists(string $tag): ?int
     {
@@ -291,7 +291,8 @@ class TagBehavior extends Behavior
         $namespace = '';
         $label = $tag;
         $separator = $this->getConfig('separator');
-        if (strpos($tag, $separator) !== false) {
+        if (str_contains($tag, $separator)) {
+            /** @psalm-suppress ArgumentTypeCoercion */
             [$namespace, $label] = explode($separator, $tag);
         }
 

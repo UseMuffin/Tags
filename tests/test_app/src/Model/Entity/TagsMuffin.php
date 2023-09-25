@@ -10,7 +10,7 @@ class TagsMuffin extends Entity
 {
     use TagAwareTrait;
 
-    public function source($source = null)
+    public function source($source = null): string
     {
         return 'Muffin/Tags.Muffins';
     }

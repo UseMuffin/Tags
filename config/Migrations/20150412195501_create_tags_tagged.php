@@ -4,7 +4,7 @@ use Migrations\AbstractMigration;
 
 class CreateTagsTagged extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $table = $this->table('tags_tagged');
 

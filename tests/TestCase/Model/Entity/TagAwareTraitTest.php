@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace Muffin\Tags\Test\TestCase\Model\Entity;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Muffin\Tags\Test\App\Model\Entity\TagsMuffin;
 
 class TagAwareTraitTest extends TestCase
 {
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.Muffin/Tags.Muffins',
         'plugin.Muffin/Tags.Tagged',
         'plugin.Muffin/Tags.Tags',
@@ -19,7 +18,7 @@ class TagAwareTraitTest extends TestCase
     {
         parent::setUp();
 
-        $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
+        $table = $this->getTableLocator()->get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
         $table->addBehavior('Muffin/Tags.Tag');
 
         $this->Table = $table;
@@ -29,7 +28,7 @@ class TagAwareTraitTest extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        TableRegistry::getTableLocator()->clear();
+        $this->getTableLocator()->clear();
         unset($this->Behavior);
     }
 

@@ -15,7 +15,7 @@ class Tagged extends Entity
      *
      * @var array
      */
-    public $accessible = [
+    public array $accessible = [
         '*' => false,
     ];
 }

@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Muffin\Tags\Test\TestCase\Model\Behavior;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use RuntimeException;
 
 class TagBehaviorTest extends TestCase
 {
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.Muffin/Tags.Buns',
         'plugin.Muffin/Tags.Muffins',
         'plugin.Muffin/Tags.Tagged',
@@ -19,7 +19,7 @@ class TagBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
+        $table = $this->getTableLocator()->get('Muffin/Tags.Muffins', ['table' => 'tags_muffins']);
         $table->addBehavior('Muffin/Tags.Tag');
 
         $this->Table = $table;
@@ -29,7 +29,7 @@ class TagBehaviorTest extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        TableRegistry::getTableLocator()->clear();
+        $this->getTableLocator()->clear();
         unset($this->Behavior);
     }
 
@@ -88,6 +88,7 @@ class TagBehaviorTest extends TestCase
                 ],
                 'id' => '3',
                 'tag_key' => '3-foobar',
+                'label' => 'foobar',
             ],
             2 => [
                 '_joinData' => [
@@ -254,9 +255,9 @@ class TagBehaviorTest extends TestCase
 
     public function testCounterCacheFieldException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Field "non_existent" does not exist in table "tags_buns"');
-        $table = TableRegistry::getTableLocator()->get('Muffin/Tags.Buns', ['table' => 'tags_buns']);
+        $table = $this->getTableLocator()->get('Muffin/Tags.Buns', ['table' => 'tags_buns']);
         $table->addBehavior('Muffin/Tags.Tag', [
             'taggedCounter' => [
                 'non_existent' => [],
@@ -266,6 +267,6 @@ class TagBehaviorTest extends TestCase
 
     public function testAssociationConditionsAreWorkingAsExpected(): void
     {
-        $this->assertEquals(2, count($this->Table->get(1, ['contain' => ['Tags']])->tags));
+        $this->assertEquals(2, count($this->Table->get(primaryKey: 1, contain: ['Tags'])->tags));
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Muffin\Tags\Model\Entity;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 
 trait TagAwareTrait
@@ -10,11 +11,11 @@ trait TagAwareTrait
     /**
      * Tag entity with given tags.
      *
-     * @param string|array $tags List of tags as an array or a delimited string (comma by default).
+     * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @param bool $merge Whether to merge or replace tags. Default true.
-     * @return bool|\Cake\ORM\Entity False on failure, entity on success.
+     * @return \Cake\Datasource\EntityInterface|bool False on failure, entity on success.
      */
-    public function tag($tags, bool $merge = true)
+    public function tag(array|string $tags, bool $merge = true): EntityInterface|bool
     {
         return $this->_updateTags($tags, $merge ? 'append' : 'replace');
     }
@@ -22,11 +23,11 @@ trait TagAwareTrait
     /**
      * Untag entity from given tags.
      *
-     * @param string|array|null $tags List of tags as an array or a delimited string (comma by default).
+     * @param array|string|null $tags List of tags as an array or a delimited string (comma by default).
      *   If no value is passed all tags will be removed.
-     * @return bool|\Cake\ORM\Entity False on failure, entity on success.
+     * @return \Cake\Datasource\EntityInterface|bool False on failure, entity on success.
      */
-    public function untag($tags = null)
+    public function untag(array|string|null $tags = null): EntityInterface|bool
     {
         if (empty($tags)) {
             return $this->_updateTags([], 'replace');
@@ -41,8 +42,9 @@ trait TagAwareTrait
 
         $tags = $this->get($property);
         if (!$tags) {
-            $contain = [$behavior->getConfig('tagsAlias')];
-            $tags = $table->get($id, compact('contain'))->get($property);
+            $tags = $table
+                ->get(primaryKey: $id, contain: [$behavior->getConfig('tagsAlias')])
+                ->get($property);
         }
 
         $tagsTable = $table->{$behavior->getConfig('tagsAlias')};
@@ -81,12 +83,12 @@ trait TagAwareTrait
     /**
      * Tag entity with given tags.
      *
-     * @param string|array $tags List of tags as an array or a delimited string (comma by default).
+     * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @param string $saveStrategy Whether to merge or replace tags.
      *   Valid values 'append', 'replace'.
-     * @return bool|\Cake\ORM\Entity False on failure, entity on success.
+     * @return \Cake\Datasource\EntityInterface|bool False on failure, entity on success.
      */
-    protected function _updateTags($tags, string $saveStrategy)
+    protected function _updateTags(array|string $tags, string $saveStrategy): EntityInterface|bool
     {
         $table = TableRegistry::getTableLocator()->get($this->source());
         $behavior = $table->behaviors()->Tag;
