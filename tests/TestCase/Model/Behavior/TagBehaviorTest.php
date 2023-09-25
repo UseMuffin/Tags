@@ -88,6 +88,7 @@ class TagBehaviorTest extends TestCase
                 ],
                 'id' => '3',
                 'tag_key' => '3-foobar',
+                'label' => 'foobar',
             ],
             2 => [
                 '_joinData' => [

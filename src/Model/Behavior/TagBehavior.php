@@ -234,10 +234,9 @@ class TagBehavior extends Behavior
                 $result[] = $common + ['id' => $existingTag];
                 continue;
             }
-            // phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
             [$id, $label] = $this->_normalizeTag($tag);
-            // phpcs:enable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
             $result[] = $common + compact(empty($id) ? $df : $pk) + [
+                'label' => $label,
                 'tag_key' => $tagKey,
             ];
         }

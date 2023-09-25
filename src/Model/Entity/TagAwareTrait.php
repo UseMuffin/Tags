@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Muffin\Tags\Model\Entity;
 
-use Cake\ORM\Entity;
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 
 trait TagAwareTrait
@@ -13,9 +13,9 @@ trait TagAwareTrait
      *
      * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @param bool $merge Whether to merge or replace tags. Default true.
-     * @return \Cake\ORM\Entity|bool False on failure, entity on success.
+     * @return \Cake\Datasource\EntityInterface|bool False on failure, entity on success.
      */
-    public function tag(array|string $tags, bool $merge = true): Entity|bool
+    public function tag(array|string $tags, bool $merge = true): EntityInterface|bool
     {
         return $this->_updateTags($tags, $merge ? 'append' : 'replace');
     }
@@ -25,9 +25,9 @@ trait TagAwareTrait
      *
      * @param array|string|null $tags List of tags as an array or a delimited string (comma by default).
      *   If no value is passed all tags will be removed.
-     * @return \Cake\ORM\Entity|bool False on failure, entity on success.
+     * @return \Cake\Datasource\EntityInterface|bool False on failure, entity on success.
      */
-    public function untag(array|string|null $tags = null): Entity|bool
+    public function untag(array|string|null $tags = null): EntityInterface|bool
     {
         if (empty($tags)) {
             return $this->_updateTags([], 'replace');
@@ -86,9 +86,9 @@ trait TagAwareTrait
      * @param array|string $tags List of tags as an array or a delimited string (comma by default).
      * @param string $saveStrategy Whether to merge or replace tags.
      *   Valid values 'append', 'replace'.
-     * @return \Cake\ORM\Entity|bool False on failure, entity on success.
+     * @return \Cake\Datasource\EntityInterface|bool False on failure, entity on success.
      */
-    protected function _updateTags(array|string $tags, string $saveStrategy): Entity|bool
+    protected function _updateTags(array|string $tags, string $saveStrategy): EntityInterface|bool
     {
         $table = TableRegistry::getTableLocator()->get($this->source());
         $behavior = $table->behaviors()->Tag;
